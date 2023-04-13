@@ -7,6 +7,7 @@ module.exports = {
         instances: '2',
         script: './.output/server/index.mjs',
         args: 'preview',
+        interpreter: 'esm'
       },
     ],
   }
