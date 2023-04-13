@@ -1,11 +1,12 @@
 module.exports = {
     apps: [
-        {
-          name: 'NuxtAppName',
-          exec_mode: 'cluster',
-          instances: 'max',
-          script: './.output/server/index.mjs',
-        port: 5000
-        }
-      ]
+      {
+        name: 'NuxtLider',
+        port: 3001,
+        exec_mode: 'cluster',
+        instances: '2',
+        script: './.output/server/index.mjs',
+        args: 'preview',
+      },
+    ],
   }
