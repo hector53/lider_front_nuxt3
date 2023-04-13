@@ -1,0 +1,113 @@
+.options-header-content{
+    display: flex;
+}
+
+.mini-chart-card{
+    border-radius: 10px;
+    padding: 15px;
+    border-color: #ECEFF2;
+    border-style: solid;
+    border-width: 1px;
+}
+.mini-chart-card:hover{
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.0599999987);
+}
+.mini-chart-card-content{
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+.icon-mini-chart{
+    background-color: rgba(237, 255, 233, 1);
+    padding: 5px;
+    border-radius: 5px;
+    width: 24px;
+    height: 24px;
+}
+.input-search-tables{
+    display: flex;
+    width: 411px;
+    padding: 8px 16px;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: rgba(236, 239, 242, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 24px;
+    background-color: rgba(249, 249, 249, 1);
+}
+.input-search-tables:hover{
+    box-shadow: 0px 1px 4px 0px rgba(0, 0, 0, 0.0599999987);
+}
+.input-search-tables img{
+    width: 16px;
+    height: 16px;
+    margin-right: 12px;
+}
+.input-search-tables .search-input{
+    width: 100%;
+    background-color: transparent;
+    outline: none;
+    color: var(--dl-color-default-gray01);
+    height: auto;
+    font-size: 14px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 400;
+    line-height: 139.9999976158142%;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+}
+.input-search-tables span{
+    color: var(--dl-color-default-gray01);
+    height: auto;
+    font-size: 14px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 400;
+    line-height: 139.9999976158142%;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+}
+
+@media (max-width: 639px) {
+    .optionsTable {
+      flex-direction: column;
+    }
+    .input-search-tables{
+        margin-top: 10px;
+        width: 100%;
+    }
+  }
+
+
+  .icon_processor{
+    width: 16px;
+    height: 16px;
+    display: flex;
+    padding: 2px;
+    position: relative;
+    align-self: auto;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 1;
+    border-color: transparent;
+    border-style: none;
+    border-width: 0;
+    margin-right: 0px;
+    border-radius: 2px;
+    margin-bottom: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    
+    margin-right: 10px;
+  }
