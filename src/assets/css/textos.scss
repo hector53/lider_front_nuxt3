@@ -15,8 +15,6 @@
 }
 .title-header1{
     color: var(--dl-color-default-text);
-    width: 893px;
-    height: auto;
     font-size: 34px;
     align-self: auto;
     font-style: SemiBold;
@@ -26,6 +24,7 @@
     line-height: 139.9999976158142%;
     font-stretch: normal;
     text-decoration: none;
+    width: 100%;
 }
 .text_title_minichart{
     color: var(--dl-color-default-text);
