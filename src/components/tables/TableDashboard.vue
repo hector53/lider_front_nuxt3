@@ -3,18 +3,18 @@
     <div class="optionsTable flex justify-between">
       <div class="flex">
         <button class="btnContentHeader1 mr-5">
-          <img src="~/assets/playground_assets/calendarline4865-l7i.svg" />
+          <img src="~/assets/playground_assets/calendarline4865-l7i.svg?url" />
           <span> Date range </span>
         </button>
         <button class="btnContentHeader1 mr-5">
-          <img src="~/assets/playground_assets/flagline4865-rck.svg" />
+          <img src="~/assets/playground_assets/flagline4865-rck.svg?url" />
           <span> Status </span>
         </button>
       </div>
       
       <div class="input-search-tables">
         <img
-          src="~/assets/playground_assets/search2line4865-uffr.svg"
+          src="~/assets/playground_assets/search2line4865-uffr.svg?url"
         />
         <input type="search" class="search-input" placeholder="Search by site" >
       </div>

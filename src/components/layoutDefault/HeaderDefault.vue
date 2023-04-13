@@ -4,7 +4,7 @@
         
       <nuxt-link to="/" class="home_title_company"
         >
-        <img src="~/assets/images/icon.png" alt="">
+        <img src="~/assets/images/icon.png?url" alt="">
         <span>Company</span>
         </nuxt-link
       >
@@ -16,7 +16,7 @@
                     <img src="https://aheioqhobo.cloudimg.io/v7/_playground-bucket-v2.teleporthq.io_/73b4dad9-a6a1-4491-9b5b-07abbaa22033/98aeaa3c-4090-41b5-bb11-ee962bfd25b1?org_if_sml=1123" alt="maskI486" class="home-mask">
                   </div>
                   <span class="home-text123"><span>Cactus Practice</span></span>
-                  <img src="~/assets/playground_assets/iconchevrondowni486-zow.svg" alt="IconchevronDownI486" class="home-iconchevron-down">
+                  <img src="~/assets/playground_assets/iconchevrondowni486-zow.svg?url" alt="IconchevronDownI486" class="home-iconchevron-down">
                 </div>
               </div>
             </div>

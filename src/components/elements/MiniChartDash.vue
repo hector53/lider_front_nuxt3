@@ -4,12 +4,12 @@
               <div class="flex justify-between py-1">
                 <div class="icon-mini-chart">
                     <slot name="icon">
-                        <img src="~/assets/playground_assets/arrowdownline7474-uods.svg" alt="arrowdownline7474" class="home-arrowdownline">
+                        <img src="~/assets/playground_assets/arrowdownline7474-uods.svg?url" alt="arrowdownline7474" class="home-arrowdownline">
                     </slot>
                  </div>
                  <div>
                     <slot name="iconDash">
-                <img src="~/assets/playground_assets/vector17474-elxa.svg" alt="Vector17474" class="home-vector1">
+                <img src="~/assets/playground_assets/vector17474-elxa.svg?url" alt="Vector17474" class="home-vector1">
 
                     </slot>
                  </div>
@@ -21,8 +21,8 @@
                     <span class="text_title_subtitle">{{subtitle}}</span>
                 </div>
                 <div class="flex items-end">
-                    <img  v-if="porcentaje>0"  src="~/assets/playground_assets/arrowdownline7474-4k0f.svg">
-                    <img  v-else  src="~/assets/playground_assets/arrowdownline7475-sxlb.svg">
+                    <img  v-if="porcentaje>0"  src="~/assets/playground_assets/arrowdownline7474-4k0f.svg?url">
+                    <img  v-else  src="~/assets/playground_assets/arrowdownline7475-sxlb.svg?url">
 
                     <span class="text_color_up" v-if="porcentaje>0" >+{{porcentaje}}%</span>
                     <span class="text_color_down" v-else >{{porcentaje}}%</span>

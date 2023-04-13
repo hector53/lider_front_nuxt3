@@ -1,11 +1,14 @@
 <template>
-         <img class="icon_processor" :src="`/_nuxt/assets/playground_assets/${data.icon}`"
+         <img class="icon_processor" :src="data.icon"
          :style="{backgroundColor: data.background}"
           :alt="processor + '_processor'" />
+         
 </template>
 
 <script setup lang="ts">
 import { watch,  reactive } from "vue";
+import iconStripeUrl from '~/assets/playground_assets/simpleiconsstripe4861-j2k.svg?url'
+import iconPaypalUrl from '~/assets/playground_assets/logospaypal4861-lh1.svg?url'
 const props = defineProps({
     processor: {
         type: String,
@@ -22,11 +25,11 @@ watch(
     // console.log("prop data cambio ", nuevoValor, valorAnterior);
     if (nuevoValor != undefined && nuevoValor != valorAnterior) {
       if(nuevoValor=="Stripe"){
-        data.icon = "simpleiconsstripe4861-j2k.svg"
+        data.icon = iconStripeUrl
         data.background = "rgb(105, 114, 222)"
       }
       else if(nuevoValor=="Paypal"){
-        data.icon = "logospaypal4861-lh1.svg"
+        data.icon = iconPaypalUrl
         data.background = "rgba(197, 227, 251, 1)"
       }
     }

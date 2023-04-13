@@ -10,7 +10,8 @@
   },
   "devDependencies": {
     "@nuxtjs/tailwindcss": "^6.6.5",
-    "nuxt": "^3.3.3"
+    "nuxt": "^3.3.3",
+    "vite-svg-loader": "^4.0.0"
   },
   "dependencies": {
     "@nuxtjs/google-fonts": "^3.0.0",
