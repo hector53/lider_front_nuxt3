@@ -1,5 +1,5 @@
 <template>
-  <div class="container max-w-8xl py-3 mt-7 mx-auto flex flex-col">
+  <div class=" tableDashboard container max-w-8xl py-3 mt-7 mx-auto flex flex-col">
     <div class="optionsTable flex justify-between">
       <div class="flex">
         <button class="btnContentHeader1 mr-5">
@@ -64,7 +64,7 @@
                 <td class="px-6 py-4">
                     5410-ayy93aWF8duJVDlgmmoPNkLt6RN30
                 </td>
-                <td class="px-6 py-4">
+                <td class="px-6 py-4 text-center">
                     <div class="flex items-center">
                         <icon-processor :processor="'Stripe'"></icon-processor>
                         <span>Stripe</span>
@@ -100,6 +100,38 @@
                     <div class="flex items-center">
                         <icon-processor :processor="'Paypal'"></icon-processor>
                         <span>Paypal</span>
+                    </div>
+                </td>
+                <td class="px-6 py-4 text-center">
+                    USD
+                </td>
+                <td class="px-6 py-4 text-center">
+                   4
+                </td>
+                <td class="px-6 py-4 text-center">
+                   0.6
+                </td>
+                <td class="px-6 py-4 text-center">
+                   0.6
+                </td>
+                <td class="px-6 py-4 text-center">
+                   Receipt
+                </td>
+            </tr>
+            <tr class=" hover:bg-gray-50 ">
+                <th scope="row" class="px-6 py-4  ">
+                  01
+                </th>
+                <td class="px-6 py-4">
+                    Jan 17, 2:43 PM
+                </td>
+                <td class="px-6 py-4">
+                    5410-ayy93aWF8duJVDlgmmoPNkLt6RN30
+                </td>
+                <td class="px-6 py-4">
+                    <div class="flex items-center">
+                        <icon-processor :processor="'Coinbase'"></icon-processor>
+                        <span>Coinbase</span>
                     </div>
                 </td>
                 <td class="px-6 py-4 text-center">

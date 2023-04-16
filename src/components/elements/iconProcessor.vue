@@ -9,6 +9,7 @@
 import { watch,  reactive } from "vue";
 import iconStripeUrl from '~/assets/playground_assets/simpleiconsstripe4861-j2k.svg?url'
 import iconPaypalUrl from '~/assets/playground_assets/logospaypal4861-lh1.svg?url'
+import iconCoinbaseUrl from '~/assets/playground_assets/coinbaselogo4862-5kf.svg?url'
 const props = defineProps({
     processor: {
         type: String,
@@ -31,6 +32,10 @@ watch(
       else if(nuevoValor=="Paypal"){
         data.icon = iconPaypalUrl
         data.background = "rgba(197, 227, 251, 1)"
+      }
+      else if(nuevoValor=="Coinbase"){
+        data.icon = iconCoinbaseUrl
+        data.background = "none"
       }
     }
   },

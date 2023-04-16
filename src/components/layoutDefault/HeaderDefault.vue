@@ -32,8 +32,9 @@
       <li>
         <nuxt-link class="text_header_toolbar2" activeClass="active" to="/withdraws">Withdraws</nuxt-link>
       </li>
+     
       <li>
-        <nuxt-link class="text_header_toolbar2" activeClass="active" to="/cards">Cards</nuxt-link>
+        <nuxt-link class="text_header_toolbar2" activeClass="active" to="/settings">Settings</nuxt-link>
       </li>
       
     </ul>
