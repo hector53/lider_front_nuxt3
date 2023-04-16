@@ -55,10 +55,7 @@
 const route = useRoute()
 const router = useRouter();
 console.log("route", route.name)
-onBeforeMount(() => {
-  // Establecer el color de fondo del body
-  document.body.style.backgroundColor = "#FCFCFC";
-});
+
 
 function logout(){
   const cookie = useCookie("token");

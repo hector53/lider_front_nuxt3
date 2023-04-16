@@ -1,4 +1,5 @@
 export default defineNuxtRouteMiddleware(async (to, from) => {
+  
   console.log("to", to);
   console.log("from,", from);
   if(to.name!="login"){
@@ -25,9 +26,21 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       return navigateTo("/login");
     }
     console.log("puede entrar a la ruta ");
+    
     if(to.name=="settings"){
+     
       return router.push({name: "settings-user-profile"})
     }
+
+    const routeName:any = to.name;
+    let bgBody = "#FFFFFF"
+    if(routeName.includes("settings")){ 
+      bgBody = "#FCFCFC"
+    }
+    if (process.client) {
+      document.body.style.backgroundColor = bgBody;
+    }
+    
     return true;
     
   }
