@@ -20,7 +20,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       // Si el token es válido, podemos almacenar la información del usuario en el objeto $auth
       console.log("token valido ", payload);
     } catch (e) {
-      console.log("el token no es valido");
+      console.log("el token no es valido", e);
       // Si el token no es válido, redirigimos al usuario a la página de inicio de sesión
       return navigateTo("/login");
     }
