@@ -22,6 +22,10 @@ export default defineNuxtConfig({
   css: [
     '@/assets/css/main.scss'
   ],
+
+  runtimeConfig: {
+    jwtSecret: '.BTF#Vziz7S%e3jx,nTTb"~!7TQf,{&A}!Ew4TzZvuJ`W%jc`W0S"f+,0Y32m.K', // can be overridden by NUXT_API_SECRET environment variable
+  },
   
   
 });

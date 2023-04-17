@@ -60,7 +60,7 @@ definePageMeta({
 });
 
 const cookie = useCookie("token")
-console.log("cookie", cookie)
+//console.log("cookie", cookie)
 const email = ref("");
 const password = ref("");
 
