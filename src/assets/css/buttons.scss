@@ -35,3 +35,15 @@
     border-color: rgb(225 230 236)
 }
 
+.btnEditProfile{
+    display: flex;
+    padding: 8px 16px;
+    box-shadow: 0px 2px 5px 0px rgba(60, 66, 87, 0.11999999731779099);
+    box-sizing: content-box;
+    align-items: center;
+    border-color: transparent;
+    border-radius: 4px;
+    flex-direction: column;
+    background-color: var(--dl-color-default-primary);
+    color: white;
+}

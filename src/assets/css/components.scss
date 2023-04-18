@@ -272,3 +272,25 @@
     text-decoration: none;
 
 }
+
+.user-profile-description-header{
+  display: flex;
+  justify-content: space-between;
+}
+.user-profile-description-header h2{
+  color: var(--dl-color-default-text);
+    font-size: 24px;
+    align-self: auto;
+    font-style: Bold;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 700;
+    line-height: 139.9999976158142%;
+    font-stretch: normal;
+    text-decoration: none;
+}
+.userItemSettings img{
+width: 24px;
+height: 24px;
+max-width: initial;
+}
