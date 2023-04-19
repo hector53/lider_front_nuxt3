@@ -143,6 +143,7 @@
 </template>
 
 <script setup lang="ts">
+
 const route = useRoute();
 const router = useRouter();
 console.log("route", route.name);

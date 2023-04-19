@@ -1,5 +1,6 @@
 // https://nuxt.com/docs/api/configuration/nuxt-config
 import svgLoader from "vite-svg-loader"
+
 export default defineNuxtConfig({
  
   srcDir: "src",
@@ -27,11 +28,6 @@ export default defineNuxtConfig({
     jwtSecret: '.BTF#Vziz7S%e3jx,nTTb"~!7TQf,{&A}!Ew4TzZvuJ`W%jc`W0S"f+,0Y32m.K', // can be overridden by NUXT_API_SECRET environment variable
   },
 
-  app: {
-    head: {
-        link: [{ rel: 'icon', type: 'image/png', href: '~/assets/images/icon.png?url' }]
-    }
-},
   
   
 });

@@ -10,6 +10,7 @@ import { watch,  reactive } from "vue";
 import iconStripeUrl from '~/assets/playground_assets/simpleiconsstripe4861-j2k.svg?url'
 import iconPaypalUrl from '~/assets/playground_assets/logospaypal4861-lh1.svg?url'
 import iconCoinbaseUrl from '~/assets/playground_assets/coinbaselogo4862-5kf.svg?url'
+
 const props = defineProps({
     processor: {
         type: String,
