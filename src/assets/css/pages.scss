@@ -1,0 +1,97 @@
+.wrapper-login{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    width: 100%;
+    background-color: rgb(246, 247, 250);
+    font-family: IBM Plex Sans;
+    padding: 30px;
+  }
+  .container-login{
+    max-width: 520px;
+    width: 100%;
+    position: relative;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-around;
+  }
+.loginHeader h1{
+    color: var(--dl-color-default-text);
+    font-size: 32px;
+    align-self: auto;
+    font-style: Bold;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 700;
+    line-height: 40px;
+    font-stretch: normal;
+    text-decoration: none;
+}
+.loginHeader .logoImg{
+    width: 24.48px;
+    height: 26px;
+    margin-right: 10px;
+}
+.loginHeader .logoText{
+    width: 60px;
+    height: 16px;
+}
+
+.loginForm{
+    box-sizing: border-box;
+    align-items: flex-start;
+    border-color: transparent;
+    border-style: none;
+    border-width: 0;
+    margin-right: 0;
+    border-radius: 10px;
+    margin-bottom: 0;
+    background-color: rgba(255, 255, 255, 1);
+}
+.loginForm h2{
+    color: var(--dl-color-default-text);
+    font-size: 32px;
+    font-family: IBM Plex Sans;
+    font-weight: 700;
+    line-height: 40px;
+}
+.loginForm p{
+    color: var(--dl-color-default-greytext);
+    font-size: 14px;
+    align-self: auto;
+    font-style: Regular;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 400;
+    line-height: 20px;
+    font-stretch: normal;
+    text-decoration: none;
+}
+.loginForm label{
+    color: var(--dl-color-default-text);
+    font-size: 14px;
+    align-self: auto;
+    font-style: Medium;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 500;
+    line-height: 20px;
+    font-stretch: normal;
+    margin-right: 0;
+    margin-bottom: 0;
+    text-decoration: none;
+}
+.loginFooter span{
+    color: white;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+}
+.loginFooter a{
+    color: white;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+}

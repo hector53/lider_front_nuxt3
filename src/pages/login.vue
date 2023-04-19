@@ -1,75 +1,126 @@
 <template>
-  <div class="flex justify-center items-center h-screen bg-gray-100">
-    <form class="bg-white p-6 rounded-lg shadow-md" @submit.prevent="login">
-      <h2 class="text-2xl font-medium mb-4">Login</h2>
-      <div class="mb-4">
-        <label class="block text-gray-700 font-medium mb-2" for="email">
-          Email
-        </label>
-        <input
-          v-model.trim="email"
-          :class="{ 'border-red-500': emailError }"
+  <div class="wrapper-login">
+    <img
+      src="~/assets/playground_assets/rectangle31705-7psw.svg?url"
+      alt="Rectangle31705"
+      class="home-rectangle3"
+      style="width: 100%; position: absolute; bottom: 0"
+    />
+
+    <div class="container-login">
+      <div class="sub-container">
+        <div class="loginHeader flex justify-start items-center">
+          <img
+            src="~/assets/playground_assets/lider-login.png?url"
+            alt=""
+            class="logoImg"
+          />
+          <img
+            src="~/assets/playground_assets/lider1705-c4p7i.svg?url"
+            alt="logoText"
+          />
+        </div>
+
+        <div class="loginForm pt-10 pl-6 pr-6 pb-10 mt-8 shadow-sm">
+          <form @submit.prevent="login">
+            <h2>Welcome back</h2>
+            <p class="mt-2">Login in to your account</p>
+            <div class="mb-6 mt-6">
+              <label for="email">Email address</label>
+              <input
+              v-model.trim="email"
+                type="email"
+                id="email"
+                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+                placeholder="Enter email address"
+                :class="{ 'border-red-500': emailError }"
           @blur="validateEmail"
-          class="w-full border border-gray-400 py-2 px-3 rounded-lg focus:outline-none focus:border-blue-500"
-          type="email"
-          id="email"
-          name="email"
           required
-        />
-        <p v-if="emailError" class="text-red-500 mt-1">{{ emailError }}</p>
-      </div>
-      <div class="mb-4">
-        <label class="block text-gray-700 font-medium mb-2" for="password">
-          Password
-        </label>
-        <input
-          v-model.trim="password"
+              />
+              <p v-if="emailError" class="text-red-500 mt-1">{{ emailError }}</p>
+            </div>
+            <div class="mb-6 mt-6">
+              <label for="email">Password</label>
+              <input
+                type="password"
+                id="password"
+                class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+                placeholder="Enter password"
+                name="password"
+                v-model.trim="password"
           :class="{ 'border-red-500': passwordError }"
           @blur="validatePassword"
-          class="w-full border border-gray-400 py-2 px-3 rounded-lg focus:outline-none focus:border-blue-500"
-          type="password"
-          id="password"
-          name="password"
-          required
-        />
-        <p v-if="passwordError" class="text-red-500 mt-1">
+                required
+              />
+              <p v-if="passwordError" class="text-red-500 mt-1">
           {{ passwordError }}
         </p>
-      </div>
-      <button
-        class="bg-blue-500 hover:bg-blue-600 text-white font-medium py-2 px-4 rounded-lg w-full"
-        type="submit"
-        :disabled="formError || formSend"
-      >
-        Login
-      </button>
-
-      <div v-if="formHttpError!=''" class="mt-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
+            </div>
+            <div class="flex items-center">
+              <input
+                v-model="checkRememberMe"
+                id="checked-checkbox"
+                type="checkbox"
+                class="w-4 h-4 text-blue-600 rounded accent-[#665AEC]"
+          
+              />
+              <label
+                for="checked-checkbox"
+                class="ml-2 text-sm font-medium text-gray-900"
+                >Remember me</label
+              >
+            </div>
+            <button
+              type="submit"
+              style="width: 100%"
+              class="text-white bg-[#665AEC] hover:bg-[#5d54c5] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-sm text-sm sm:w-auto px-5 py-2.5 text-center mt-6"
+              :disabled="formError || formSend"
+              >
+              Submit
+            </button>
+            <div v-if="formHttpError!=''" class="mt-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
   <strong class="font-bold">Error:</strong>
   <span class="block sm:inline">{{formHttpError}}</span>
 </div>
-  
-    </form>
+          </form>
+        </div>
+      </div>
+      <div class="loginFooter flex justify-between items-center mt-6">
+        <span>© Lider</span>
+        <div class="flex justify-between">
+          <a href="#" class="mr-4">Contact</a>
+          <a href="#">Privacy and conditions</a>
+        </div>
+      </div>
+    </div>
   </div>
 </template>
 
 <script setup lang="ts">
-
 definePageMeta({
   layout: false,
 });
 
-const cookie = useCookie("token")
+const cookie = useCookie("token");
+const rememberMe = useCookie("rememberMe");
+
 //console.log("cookie", cookie)
 const email = ref("");
 const password = ref("");
 
+if(rememberMe.value){
+  let cookieRemember:any = rememberMe.value
+    console.log("existe la cookie",rememberMe.value)
+    email.value = cookieRemember.email
+    password.value = cookieRemember.password
+}
+const checkRememberMe = ref(true);
 const emailError = ref("");
 const passwordError = ref("");
 
 const formError = computed(() => !!emailError.value || !!passwordError.value);
 const formSend = ref(false);
-const formHttpError = ref("")
+const formHttpError = ref("");
 const router = useRouter();
 
 const validateEmail = () => {
@@ -93,33 +144,37 @@ const validatePassword = () => {
 };
 
 const login = async () => {
-  
   validateEmail();
   validatePassword();
 
   if (!formError.value) {
-    formSend.value = true
+    formSend.value = true;
     const params = {
       email: email.value,
       password: password.value,
     };
     const response = await useAsyncData(async () => {
-      return await $fetch(urlApi+"/auth/login", {
+      return await $fetch(urlApi + "/auth/login", {
         method: "POST",
         body: params,
       });
     });
     console.log("response", response);
-    formSend.value = false
+    formSend.value = false;
     if (response.error.value) {
-        // @ts-ignore. 
+      // @ts-ignore.
       const { data } = response.error.value;
       console.log("error:", data);
-      formHttpError.value = data.message
-    }else{
-      const  data  = response.data.value;
-      cookie.value = JSON.stringify(data)
-      console.log("es correcto avanzamos ")
+      formHttpError.value = data.message;
+    } else {
+      const data = response.data.value;
+      cookie.value = JSON.stringify(data);
+      if(checkRememberMe.value==true){
+        rememberMe.value = JSON.stringify(params);
+      }else{
+        rememberMe.value=null
+      }
+      console.log("es correcto avanzamos ");
       router.push("/");
     }
 
