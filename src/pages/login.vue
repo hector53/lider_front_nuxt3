@@ -11,7 +11,7 @@
       <div class="sub-container">
         <div class="loginHeader flex justify-start items-center">
           <img
-            src="~/assets/playground_assets/lider-login.svg?url"
+            src="~/assets/playground_assets/lider-login.png?url"
             alt=""
             class="logoImg"
           />
