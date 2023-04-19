@@ -105,6 +105,13 @@
   </div>
 </template>
 
-<script setup></script>
+<script setup>
+useHead({
+  title: 'Lider | Home',
+  meta: [
+    { name: 'description', content: 'Dashboard page.' }
+  ],
+})
+</script>
 
 <style lang="scss" scoped></style>

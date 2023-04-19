@@ -40,7 +40,7 @@
               <p v-if="emailError" class="text-red-500 mt-1">{{ emailError }}</p>
             </div>
             <div class="mb-6 mt-6">
-              <label for="email">Password</label>
+              <label for="password">Password</label>
               <input
                 type="password"
                 id="password"
@@ -100,6 +100,13 @@
 definePageMeta({
   layout: false,
 });
+
+useHead({
+  title: 'Lider | Login',
+  meta: [
+    { name: 'description', content: 'Login page.' }
+  ],
+})
 
 const cookie = useCookie("token");
 const rememberMe = useCookie("rememberMe");
