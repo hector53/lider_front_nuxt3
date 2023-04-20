@@ -1,7 +1,11 @@
 <template>
-  <ModalStatic :idModal="'modalPassword'" :title="'Change password'">
+  <ModalStatic
+    :idModal="'modalPassword'"
+    :title="'Change password'"
+    @submit-form="submitForm()"
+  >
     <template #content>
-      <form>
+      <form @submit="submitForm()">
         <div class="mb-6 relative">
           <label for="current_password" class="font-normal text-sm"
             >Current password</label
@@ -12,28 +16,23 @@
             class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
             placeholder="Enter current password"
             name="current_password"
-            v-model="form.curren_password"
-            required
+            v-model="form.current_password"
+            @blur="v$.current_password.$touch"
             :class="{
-              'border-red-500 focus:border-red-500': v$.curren_password.$error,
-              'border-[#42d392] ': !v$.curren_password.$invalid,
+              'border-red-500 focus:border-red-500': v$.current_password.$error,
             }"
-            @change="v$.curren_password.$touch"
           />
-
-
-          <Icon
-            class="absolute right-2 h-full text-xl text-green-500"
-            :class="{
-              'text-green-500': !v$.curren_password.$invalid,
-              'text-yellow-500': v$.curren_password.$error,
-            }"
-            :name="`heroicons-solid:${
-              !v$.curren_password.$error ? 'check-circle' : 'exclamation'
-            }`"
-          />
-          <p class="mt-2 text-sm text-red-600 dark:text-red-500">
-           aqui va el error:  </p>
+          <div v-if="v$.current_password.$error">
+            <ul>
+              <li
+                v-for="(error, index) in v$.current_password.$errors"
+                :key="index"
+                class="mt-2 text-sm text-red-600 dark:text-red-500"
+              >
+                {{ error.$message }}
+              </li>
+            </ul>
+          </div>
         </div>
         <div class="mb-6">
           <label for="password" class="font-normal text-sm">New password</label>
@@ -44,7 +43,12 @@
             placeholder="Enter new password"
             name="password"
             v-model="form.new_password"
+            @blur="v$.new_password.$touch"
+            :class="{
+              'border-red-500 focus:border-red-500': v$.new_password.$error,
+            }"
           />
+        
         </div>
 
         <div class="mb-6 font-normal text-sm text-[#6c6f75]">
@@ -54,7 +58,9 @@
               alt=""
               class="mr-2"
             />
-            <span>At least 8 character</span>
+            <span 
+           :class="{'text-red-600': error.new_password_error.min==true}"
+            >At least 8 character</span>
           </div>
           <div class="flex flex-row mb-2">
             <img
@@ -62,7 +68,9 @@
               alt=""
               class="mr-2"
             />
-            <span>Lower case letters (a-z)</span>
+            <span
+            :class="{'text-red-600': error.new_password_error.lowercase==true}"
+            >Lower case letters (a-z)</span>
           </div>
           <div class="flex flex-row mb-2">
             <img
@@ -70,7 +78,9 @@
               alt=""
               class="mr-2"
             />
-            <span>Upper case letters (A-Z)</span>
+            <span
+            :class="{'text-red-600': error.new_password_error.uppercase==true}"
+            >Upper case letters (A-Z)</span>
           </div>
           <div class="flex flex-row mb-2">
             <img
@@ -78,7 +88,9 @@
               alt=""
               class="mr-2"
             />
-            <span>Numbers (0-9)</span>
+            <span
+            :class="{'text-red-600': error.new_password_error.digits==true}"
+            >Numbers (0-9)</span>
           </div>
           <div class="flex flex-row mb-2">
             <img
@@ -86,7 +98,9 @@
               alt=""
               class="mr-2"
             />
-            <span>Special characters ( ex. !@#$%{&*)</span>
+            <span
+            :class="{'text-red-600': error.new_password_error.symbols==true}"
+            >Special characters ( ex. !@#$%{&*)</span>
           </div>
         </div>
       </form>
@@ -177,31 +191,119 @@
 <script setup lang="ts">
 import { required, helpers, minLength } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
+import passwordValidator from "password-validator";
+import type { ValidatorFn, ValidationArgs } from "@vuelidate/core";
+const passwordSchema = new passwordValidator();
+
+passwordSchema
+  .is()
+  .min(8) // Mínimo 8 caracteres
+  .has()
+  .uppercase() // Al menos una letra mayúscula
+  .has()
+  .lowercase() // Al menos una letra minúscula
+  .has()
+  .digits() // Al menos un número
+  .has()
+  .symbols();
 
 const form = reactive({
-  curren_password: null,
-  new_password: null,
+  current_password: "",
+  new_password: "",
 });
 const error = reactive({
-  current_password_error: "",
-
-  new_password_error: "",
+  current_password_error: {
+    text: "",
+    status: false,
+  },
+  new_password_error: {
+    min: false, 
+    uppercase: false, 
+    lowercase: false, 
+    digits: false, 
+    symbols: false
+  },
 });
+const validPassword: ValidatorFn = (
+  value: string,
+  args?: ValidationArgs
+): any => {
+  const valid = passwordSchema.validate(value, { details: true });
+  console.log("valid", valid);
 
+  const errors = {
+    $valid: false,
+    $message: {},
+  };
+  if (Array.isArray(valid)) {
+  
+    errors.$message = valid
+    if(valid.length==0){
+      errors.$valid = true
+    }
+  } 
+  return errors
+};
 const rules = computed(() => {
   return {
-    curren_password: {
+    current_password: {
       required: helpers.withMessage("The password field is required", required),
     },
     new_password: {
-      required: helpers.withMessage(
-        "The password confirmation field is required",
-        required
-      ),
-      minLength: minLength(8),
+      validPassword,
     },
   };
 });
 
 const v$ = useVuelidate(rules, form);
+
+
+watch(
+  () => v$.value.new_password.validPassword.$response.$message,
+  async (nuevoValor, valorAnterior) => {
+   //  console.log("prop data cambio ", nuevoValor, valorAnterior);
+     if (Array.isArray(nuevoValor)) {
+          reset_error()
+          for(let i=0; i<nuevoValor.length; i++){
+            
+            // @ts-ignore
+            if(nuevoValor[i].validation=="min"){
+              error.new_password_error.min = true
+            }
+             // @ts-ignore
+            if(nuevoValor[i].validation=="symbols"){
+              error.new_password_error.symbols = true
+            }
+             // @ts-ignore
+            if(nuevoValor[i].validation=="uppercase"){
+              error.new_password_error.uppercase = true
+            }
+             // @ts-ignore
+            if(nuevoValor[i].validation=="lowercase"){
+              error.new_password_error.lowercase = true
+            }
+             // @ts-ignore
+            if(nuevoValor[i].validation=="digits"){
+              error.new_password_error.digits = true
+            }
+          }
+     }
+  },
+  { immediate: true }
+);
+function reset_error(){
+  error.new_password_error.min=false 
+  error.new_password_error.digits=false 
+  error.new_password_error.lowercase=false 
+  error.new_password_error.uppercase=false 
+  error.new_password_error.symbols=false 
+  
+}
+async function submitForm() {
+  console.log("submit form");
+  v$.value.$validate();
+  if (!v$.value.$error) {
+    console.log("todo bien validado");
+  }
+}
 </script>
