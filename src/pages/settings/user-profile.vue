@@ -115,21 +115,21 @@
               >Special characters ( ex. !@#$%{&*)</span
             >
           </div>
-          <div v-if="formHttpError!=''" class="mt-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative" role="alert">
-  <strong class="font-bold">Error:</strong>
-  <span class="block sm:inline">{{formHttpError}}</span>
-</div>
+          <div
+            v-if="formHttpError != ''"
+            class="mt-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
+            role="alert"
+          >
+            <strong class="font-bold">Error:</strong>
+            <span class="block sm:inline">{{ formHttpError }}</span>
+          </div>
         </div>
       </form>
     </template>
   </ModalStatic>
 
   <NuxtLayout name="user-profile">
-    
     <template #header>
-
-  
-
       <h2 class="sm:mt-0 mt-4">Personal information</h2>
       <button
         class="text-white bg-[#665AEC] hover:bg-[#5d54c9] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
@@ -141,7 +141,7 @@
     <template #content>
       <div class="user-profile-description-settings grid grid-cols-12 mt-2">
         <div class="lg:col-span-6 col-span-full">
-          <user-item-settings :title="'Julian Perez'" :subtitle="'Full name'">
+          <user-item-settings :title="data.fullName" :subtitle="'Full name'">
             <template #iconLeft>
               <img
                 src="~/assets/playground_assets/user6line9110-khwm.svg?url"
@@ -149,7 +149,7 @@
               />
             </template>
           </user-item-settings>
-          <user-item-settings :title="'Administrator'" :subtitle="'Role name'">
+          <user-item-settings :title="data.roleUser" :subtitle="'Role name'">
             <template #iconLeft>
               <img
                 src="~/assets/playground_assets/adminline9110-ywq.svg?url"
@@ -158,7 +158,7 @@
             </template>
           </user-item-settings>
           <user-item-settings
-            :title="'20, March, 2023'"
+            :title="data.dateUser"
             :subtitle="'Creation date'"
           >
             <template #iconLeft>
@@ -171,7 +171,7 @@
         </div>
         <div class="lg:col-span-6 col-span-full">
           <user-item-settings
-            :title="'hectoracosta5@gmail.com'"
+            :title="data.emailUser"
             :subtitle="'Email address'"
           >
             <template #iconLeft>
@@ -217,10 +217,20 @@ import { Modal, initDropdowns } from "flowbite";
 
 import type { ModalOptions, ModalInterface } from "flowbite";
 const passwordSchema = new passwordValidator();
-import { useToast } from 'tailvue'
-const formHttpError = ref("")
+import { useToast } from "tailvue";
+const formHttpError = ref("");
 const modal = ref();
 const cookie = useCookie("token");
+//@ts-ignore
+const userData = cookie.value.user;
+
+const data = reactive({
+  fullName: userData.fullName,
+  roleUser: userData.role,
+  emailUser: userData.email,
+  dateUser: convertDate(userData.updated),
+});
+
 passwordSchema
   .is()
   .min(8) // Mínimo 8 caracteres
@@ -322,9 +332,8 @@ function reset_error() {
   error.new_password_error.symbols = false;
 }
 async function change_password() {
-  const $toast = useToast()
+  const $toast = useToast();
   const response = await useAsyncData(async () => {
-    
     return await $fetch(
       // @ts-ignore
       urlApi + "/users/" + cookie.value.user.id + "/password",
@@ -346,12 +355,12 @@ async function change_password() {
     // @ts-ignore.
     const { data } = response.error.value;
     console.log("error:", data);
-    formHttpError.value = data.message
+    formHttpError.value = data.message;
   } else {
-    const data:any = response.data.value;
+    const data: any = response.data.value;
     console.log("response", data);
-    $toast.success('Password updated successfully')
-    modal.value.hide()
+    $toast.success("Password updated successfully");
+    modal.value.hide();
   }
 }
 
@@ -366,17 +375,28 @@ async function submitForm() {
   }
 }
 
+function convertDate(isoDate: string) {
+  const date = new Date(isoDate);
+  const options: Intl.DateTimeFormatOptions = {
+    day: "numeric",
+    month: "long",
+    year: "numeric",
+  };
+  const formattedDate = date.toLocaleDateString("en-US", options);
+  return formattedDate
+}
+
 function hideModal() {
   modal.value.hide();
 }
 
 function abrirModal() {
-  form.current_password = "", 
-  form.new_password = ""
+  (form.current_password = ""), (form.new_password = "");
   modal.value.toggle();
 }
 
 onMounted(() => {
+  console.log("fullName", data.fullName);
   const $modalElement: any = document.querySelector("#modalPassword");
   const modalOptions: ModalOptions = {
     placement: "center",
@@ -396,9 +416,6 @@ onMounted(() => {
   };
   modal.value = new Modal($modalElement, modalOptions);
 
-
-  initDropdowns()
-
-
+  initDropdowns();
 });
 </script>

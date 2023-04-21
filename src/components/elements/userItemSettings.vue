@@ -7,7 +7,7 @@
         </slot>
       </div>
       <div class="pl-5">
-        <h3 class="text-xl sm:w-60 w-48 break-words ">{{title}}</h3>
+        <h3 class="text-xl sm:w-60 w-48 break-words capitalize ">{{title}}</h3>
         <span style="color: rgba(148, 150, 155, 1)">{{subtitle}}</span>
       </div>
     </div>
