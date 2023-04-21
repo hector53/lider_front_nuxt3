@@ -28,7 +28,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     if (to.name == "settings") {
       return router.push({ name: "settings-user-profile" });
     }
-    const routeName: any = to.name;
+    let routeName:string = to.name?.toString() || '';
     let bgBody = "#FFFFFF";
     if (routeName.includes("settings")) {
       bgBody = "#FCFCFC";

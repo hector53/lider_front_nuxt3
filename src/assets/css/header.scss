@@ -47,6 +47,7 @@
     display: flex;
     position: relative;
     align-items: center;
+    cursor: pointer;
     border-color: transparent;
 }
 .home-accounticon {
@@ -149,3 +150,310 @@
     margin-bottom: 0;
     text-decoration: none;
 }
+
+
+.home-dropdown-menu {
+    font-family: Inter;
+    width: 234px;
+    height: auto;
+    top: 60px;
+    right: 50px;
+    display: flex;
+    padding: 0 0 8px 0;
+    overflow: hidden;
+    position: absolute;
+    box-shadow: 0px 10px 8px 0px rgba(0, 0, 0, 0.0399999991);
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: rgb(229, 231, 235);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    flex-direction: column;
+    background-color: white;
+    z-index: 10;
+  }
+  .home-heading {
+    display: flex;
+    padding: 8px 20px;
+    position: relative;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-bottom: 0px;
+    background-color: rgba(243, 244, 246, 1)
+  }
+  .home-accounticon {
+    width: 38px;
+    height: 38px;
+    display: flex;
+    padding: 0;
+    position: relative;
+    align-self: auto;
+    box-sizing: border-box;
+    align-items: flex-start;
+    flex-shrink: 1;
+    border-color: transparent;
+    border-style: none;
+    border-width: 0;
+    margin-right: 10px;
+    border-radius: 0px 0px 0px 0px;
+    margin-bottom: 0;
+    flex-direction: row;
+    justify-content: flex-start;
+    background-color: transparent;
+  }
+  .home-backgroundellipse {
+    top: 0px;
+    left: 0px;
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    border-color: transparent;
+  }
+  .home-mask {
+    top: 0px;
+    left: 0px;
+    width: 38px;
+    height: 38px;
+    position: absolute;
+    border-color: transparent;
+  }
+  .home-body {
+    display: flex;
+    position: relative;
+    align-items: flex-start;
+    border-color: transparent;
+    flex-direction: column;
+  }
+  .home-text {
+    color: var(--dl-color-default-greytext);
+    height: auto;
+    align-self: stretch;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 0;
+    margin-bottom: 0px;
+  }
+  .home-text02 {
+    color: var(--dl-color-default-text);
+    height: auto;
+    align-self: stretch;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .home-list1 {
+    display: flex;
+    padding: 8px 8px 0 8px;
+    z-index: 1;
+    position: relative;
+    align-self: stretch;
+    align-items: flex-start;
+    border-color: transparent;
+    margin-bottom: 0px;
+    flex-direction: column;
+  }
+  .home-framedropdownheading {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-bottom: 4px;
+  }
+  .home-text04 {
+    color: var(--dl-color-default-gray01);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 16px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .home-framedropdownitem {
+    cursor: pointer;
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .home-framedropdownitem:hover{
+    background-color: rgba(246, 248, 250, 1);
+  }
+  .home-user6line {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-right: 12px;
+  }
+  .home-content {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-items: center;
+    border-color: transparent;
+    margin-right: 12px;
+  }
+  .home-text06 {
+    color: var(--dl-color-default-text);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .home-framedropdownitem1 {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .home-arrowupdownline {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-right: 12px;
+  }
+  .home-content1 {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-items: center;
+    border-color: transparent;
+    margin-right: 12px;
+  }
+  .home-text08 {
+    color: var(--dl-color-default-text);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .home-framedropdownitem2 {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 6px;
+  }
+  .home-settingsline {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-right: 12px;
+  }
+  .home-content2 {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-items: center;
+    border-color: transparent;
+    margin-right: 12px;
+  }
+  .home-text10 {
+    color: var(--dl-color-default-text);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .home-list2 {
+    display: flex;
+    padding: 0 8px;
+    z-index: 2;
+    position: relative;
+    align-self: stretch;
+    align-items: flex-start;
+    border-color: transparent;
+    margin-bottom: 0px;
+    flex-direction: column;
+  }
+  .home-framedropdownheading1 {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: flex-start;
+    flex-shrink: 0;
+    border-color: transparent;
+    margin-bottom: 4px;
+  }
+  .home-text12 {
+    color: var(--dl-color-default-gray01);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 16px;
+    margin-right: 0;
+    margin-bottom: 0;
+  }
+  .home-framedropdownitem3 {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 6px;
+    margin-bottom: 4px;
+  }
+  .home-questionline {
+    width: 16px;
+    height: 16px;
+    position: relative;
+    margin-right: 12px;
+  }
+  .home-content3 {
+    display: flex;
+    position: relative;
+    flex-grow: 1;
+    align-items: center;
+    border-color: transparent;
+    margin-right: 12px;
+  }
+  .home-text14 {
+    color: var(--dl-color-default-text);
+    height: auto;
+    align-self: auto;
+    text-align: left;
+    line-height: 20px;
+    margin-right: 10px;
+    margin-bottom: 0;
+  }
+  .home-framedropdownitem4 {
+    display: flex;
+    padding: 8px 12px;
+    position: relative;
+    align-self: stretch;
+    align-items: center;
+    flex-shrink: 0;
+    border-color: transparent;
+    border-radius: 6px;
+    margin-bottom: 4px;
+
+  }
+ 

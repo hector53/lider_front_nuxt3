@@ -16,9 +16,10 @@ export default defineNuxtConfig({
     '~/components/layoutDefault','~/components/elements', '~/components/tables'
   ],
   modules: [
-    "@nuxtjs/tailwindcss",
+    '@nuxtjs/tailwindcss',
     '@nuxtjs/google-fonts',
-    'nuxt-icon'
+    'nuxt-icon',
+    '@tailvue/nuxt'
   ],
 
   css: [

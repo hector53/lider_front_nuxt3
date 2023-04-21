@@ -17,7 +17,7 @@
           <button
             type="button"
             class="text-gray-400 bg-transparent hover:bg-gray-200 hover:text-gray-900 rounded-lg text-sm p-1.5 ml-auto inline-flex items-center"
-            :data-modal-hide="idModal"
+            @click="hideModal()"
           >
             <svg
               class="w-5 h-5"
@@ -45,7 +45,7 @@
         >
          
           <button
-            :data-modal-hide="idModal"
+            @click="hideModal()"
             type="button"
             class="text-gray-500 bg-white hover:bg-gray-100 focus:ring-4 focus:outline-none focus:ring-blue-300 rounded-md border border-gray-200 text-sm font-medium px-5 py-2.5 hover:text-gray-900 focus:z-10"
           >
@@ -66,7 +66,7 @@
 
 <script setup lang="ts">
 import { initModals } from "flowbite";
-const emitters = defineEmits(["submit-form",]);
+const emitters = defineEmits(["submit-form","hide-modal"]);
 const props = defineProps({
   idModal: {
     type: String,
@@ -78,11 +78,13 @@ const props = defineProps({
   },
 });
 
+function hideModal(){
+  emitters("hide-modal");
+}
 
 function submitForm(){
   emitters("submit-form");
 }
 onMounted(() => {
-  initModals();
 });
 </script>
