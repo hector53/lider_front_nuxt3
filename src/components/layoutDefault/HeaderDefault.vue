@@ -37,7 +37,7 @@
   </div>
   <div class="home-toolbar2">
     <div class="container max-w-8xl px-2 py-3 mx-auto">
-      <ul class="flex justify-start items-center">
+      <ul class="flex flex-col sm:flex-row justify-start items-center">
         <li>
           <nuxt-link class="text_header_toolbar2" activeClass="active" to="/"
             >Dashboard</nuxt-link
@@ -49,6 +49,23 @@
             activeClass="active"
             to="/withdraws"
             >Withdraws</nuxt-link
+          >
+        </li>
+        <li>
+          <nuxt-link
+            class="text_header_toolbar2"
+            activeClass="active"
+            to="/users"
+            >Users</nuxt-link
+          >
+        </li>
+
+        <li>
+          <nuxt-link
+            class="text_header_toolbar2"
+            activeClass="active"
+            to="/domains"
+            >Domains</nuxt-link
           >
         </li>
 
