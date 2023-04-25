@@ -598,6 +598,7 @@ function abrirModal() {
   form.email = ""
   form.role = ""
   form.password = ""
+  form.role = "user"
   modal.value.toggle();
 }
 function hideModal() {
