@@ -380,6 +380,7 @@ function abrirModal() {
   editForm.value = false;
   //@ts-ignore
   idEditRow.value = "";
+  form.url = "";
   modal.value.toggle();
 }
 function hideModal() {

@@ -594,6 +594,10 @@ function abrirModal() {
   editUserForm.value = false;
   //@ts-ignore
   idUserEdit.value = "";
+  form.fullName = ""
+  form.email = ""
+  form.role = ""
+  form.password = ""
   modal.value.toggle();
 }
 function hideModal() {
