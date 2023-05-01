@@ -83,7 +83,13 @@
               <th scope="col" class="px-6 py-3 text-left">Url</th>
               <th scope="col" class="px-6 py-3 text-center">Active</th>
               <th scope="col" class="px-6 py-3 text-center">Created</th>
-              <th scope="col" class="px-6 py-3 text-center">Updated</th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-center"
+                style="width: 170px"
+              >
+                Processors
+              </th>
               <th scope="col" class="px-6 py-3 text-center">Options</th>
             </tr>
           </thead>
@@ -94,7 +100,7 @@
               :key="index"
             >
               <th scope="row" class="px-6 py-4">{{ index + 1 }}</th>
-              <td class="px-6 py-4 ">{{ row.url }}</td>
+              <td class="px-6 py-4">{{ row.url }}</td>
               <td class="px-6 py-4 text-center">
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input
@@ -116,7 +122,13 @@
                 {{ convertDate(row.created) }}
               </td>
               <td class="px-6 py-4 text-center">
-                {{ convertDate(row.updated) }}
+                <processor-item
+                  v-for="(item, index) in row.domainprocessors"
+                  :key="index"
+                  :name="item.processor[0].name"
+                  :image="item.processor[0].image"
+                  :active="item.active.valueOf()"
+                ></processor-item>
               </td>
               <td class="px-6 py-4">
                 <div class="flex">
@@ -134,6 +146,12 @@
                       src="~/assets/playground_assets/delete-bin-4-fill.svg?url"
                     />
                     <span> Delete </span>
+                  </button>
+                  <button
+                    class="btnContentHeader1 mr-5"
+                    @click="view_processors(row._id)"
+                  >
+                    <span> Processors </span>
                   </button>
                 </div>
               </td>
@@ -181,6 +199,7 @@ import type { ValidatorFn, ValidationArgs } from "@vuelidate/core";
 import { useToast, useModal } from "tailvue";
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
+const router = useRouter();
 //@ts-ignore
 const token = cookie.value.token;
 
@@ -188,9 +207,22 @@ const formHttpError = ref("");
 const editForm = ref(false);
 const idEditRow = ref("");
 const modal = ref();
+
+interface ProcessorData {
+  name: string;
+  image: string;
+  active: Boolean;
+}
+
+interface DomainProcessor {
+  active: Boolean;
+  processor: ProcessorData[];
+}
+
 interface Domain {
   _id?: string;
   url: string;
+  domainprocessors?: DomainProcessor[];
   active?: boolean;
   created: string;
   updated: string;
@@ -214,10 +246,7 @@ const form = reactive({
 const rules = computed(() => {
   return {
     url: {
-      required: helpers.withMessage(
-        "The url field is required",
-        required
-      ),
+      required: helpers.withMessage("The url field is required", required),
       url,
     },
   };
@@ -226,6 +255,10 @@ const rules = computed(() => {
 const v$ = useVuelidate(rules, form);
 
 console.log(token);
+
+function view_processors(id?: string) {
+  router.push({ name: "domains-domain-processors", params: { domain: id } });
+}
 
 async function get_domains(page = 1) {
   try {

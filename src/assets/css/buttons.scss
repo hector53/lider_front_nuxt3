@@ -8,7 +8,21 @@
     border-width: 1px;
     border-radius: 8px;
     background-color: rgba(255, 255, 255, 1);
+    min-width: 90px;
+    justify-content: center;
 }
+@media (max-width: 768px) {
+    .btnContentHeader1{
+        min-width: 30px;
+    }
+    .btnContentHeader1 span {
+      display: none;
+    }
+    .btnContentHeader1 img {
+        margin-right: 0!important
+      }
+  }
+
 .btnContentHeader1 img{
     display: block;
     width: 16px;

@@ -130,7 +130,7 @@
     flex-direction: row;
     justify-content: flex-start;
     
-    margin-right: 10px;
+    margin-right: 5px;
   }
 
   .tableDashboard table th{
@@ -293,4 +293,11 @@
 width: 24px;
 height: 24px;
 max-width: initial;
+}
+
+.blockProcessors{
+  border-color: #ECEFF2;
+  border-style: solid;
+  border-width: 1px;
+  font-family: IBM Plex Sans;
 }

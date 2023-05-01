@@ -14,7 +14,7 @@ import iconCoinbaseUrl from '~/assets/playground_assets/coinbaselogo4862-5kf.svg
 const props = defineProps({
     processor: {
         type: String,
-        default: 'Stripe'
+        default: 'stripe'
     }, 
 });
 const data = reactive({
@@ -26,15 +26,15 @@ watch(
   async (nuevoValor, valorAnterior) => {
     // console.log("prop data cambio ", nuevoValor, valorAnterior);
     if (nuevoValor != undefined && nuevoValor != valorAnterior) {
-      if(nuevoValor=="Stripe"){
+      if(nuevoValor=="stripe"){
         data.icon = iconStripeUrl
         data.background = "rgb(105, 114, 222)"
       }
-      else if(nuevoValor=="Paypal"){
+      else if(nuevoValor=="paypal"){
         data.icon = iconPaypalUrl
         data.background = "rgba(197, 227, 251, 1)"
       }
-      else if(nuevoValor=="Coinbase"){
+      else if(nuevoValor=="coinbase"){
         data.icon = iconCoinbaseUrl
         data.background = "none"
       }

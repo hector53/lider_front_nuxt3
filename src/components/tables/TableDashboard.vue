@@ -66,7 +66,7 @@
                 </td>
                 <td class="px-6 py-4 text-center">
                     <div class="flex items-center">
-                        <icon-processor :processor="'Stripe'"></icon-processor>
+                        <icon-processor :processor="'stripe'"></icon-processor>
                         <span>Stripe</span>
                     </div>
                 </td>
@@ -98,7 +98,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
-                        <icon-processor :processor="'Paypal'"></icon-processor>
+                        <icon-processor :processor="'paypal'"></icon-processor>
                         <span>Paypal</span>
                     </div>
                 </td>
@@ -130,7 +130,7 @@
                 </td>
                 <td class="px-6 py-4">
                     <div class="flex items-center">
-                        <icon-processor :processor="'Coinbase'"></icon-processor>
+                        <icon-processor :processor="'coinbase'"></icon-processor>
                         <span>Coinbase</span>
                     </div>
                 </td>
