@@ -1,0 +1,17 @@
+query getSites ($page: Int!, $limit: Int!, $search: String!) {
+  sites(page: $page, limit: $limit, search: $search){
+    sites {
+      _id
+      site
+      webhook
+      public_key
+      private_key
+    }
+    count
+    totalPages
+    hasNextPage
+    hasPreviousPage
+    nextPage
+    previousPage
+  }
+}

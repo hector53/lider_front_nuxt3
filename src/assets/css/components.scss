@@ -301,3 +301,93 @@ max-width: initial;
   border-width: 1px;
   font-family: IBM Plex Sans;
 }
+#modalEditSite{
+  font-family: Inter;
+  font-size: 14px;
+}
+.settings_keys_site{
+  gap: 24px;
+    display: flex;
+    padding: 24px;
+    align-self: stretch;
+    border-color: rgba(238, 238, 238, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    flex-direction: column;
+    background-color: rgba(246, 248, 250, 1);
+}
+.labelBold{
+  color: rgba(65, 69, 82, 1);
+    height: auto;
+    font-size: 16px;
+    font-style: Bold;
+    text-align: left;
+    font-family: IBM Plex Sans;
+    font-weight: 700;
+    line-height: 20px;
+    font-stretch: normal;
+}
+.labelPass{
+  font-size: 22px;
+    text-align: left;
+    font-family: Inter;
+    font-weight: 600;
+    line-height: 139.9999976158142%;
+    font-stretch: normal;
+    height: 20px;
+}
+
+.blockEditModal{
+  font-family: Inter;
+  gap: 24px;
+      padding: 24px;
+    align-self: stretch;
+    align-items: flex-start;
+    border-color: rgba(227, 232, 238, 1);
+    border-style: solid;
+    border-width: 1px;
+    border-radius: 8px;
+    background-color: rgba(255, 255, 255, 1);
+}
+
+.status-badge{
+    width: 75px;
+    display: flex;
+    padding: 4px 6px;
+    align-items: center;
+    flex-shrink: 0;
+    border-radius: 4px;
+    justify-content: center;
+    
+}
+.status-badge.success{
+  background-color: rgba(237, 255, 233, 1);
+}
+.status-badge.error{
+  background-color: rgba(255, 233, 236, 1);
+}
+.status-badge img{
+  width: 16px;
+  height: 16px;
+  
+}
+.status-image{
+  width: 16px;
+    height: 16px;
+    display: flex;
+    align-items: flex-start;
+    flex-shrink: 0;
+    margin-right: 5px;
+}
+.processorSite{
+  background: rgb(249, 249, 249);
+  padding-left: 10px;
+  padding-right: 10px;
+  padding-top: 5px;
+  padding-bottom: 5px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  margin-right: 10px;
+}

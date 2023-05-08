@@ -1,3 +1,21 @@
 .modalLider{
     font-family: IBM Plex Sans;
 }
+.modal-info-title{
+    font-family: IBM Plex Sans;
+    line-height: 1.6;
+    padding: 20px;
+}
+.modal-info-title h2{
+    font-weight: 600;
+    font-size: 20px;
+    text-align: center;
+    color: #414552;
+    margin-bottom: 10px;
+}
+.modal-info-title p{
+    text-align: center;
+    font-size: 14px;
+    font-weight: 400;
+    color: #95969B;
+}

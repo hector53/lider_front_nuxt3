@@ -6,7 +6,7 @@
     aria-hidden="true"
     class="modalLider fixed top-0 left-0 right-0 z-50 hidden w-full p-4 overflow-x-hidden overflow-y-auto md:inset-0 h-[calc(100%-1rem)] max-h-full"
   >
-    <div class="relative w-full max-w-sm max-h-full">
+    <div class="relative w-full max-w-lg max-h-full">
       <!-- Modal content -->
       <div class="relative bg-white rounded-lg shadow">
         <!-- Modal header -->
@@ -56,7 +56,7 @@
             type="button"
             class="text-white bg-[#665AEC] hover:bg-[#5d54c9] focus:ring-4 focus:outline-none focus:ring-blue-300 font-medium rounded-md text-sm px-5 py-2.5 text-center"
           >
-            Save changes
+            {{props.btnSave}}
           </button>
         </div>
       </div>
@@ -65,7 +65,6 @@
 </template>
 
 <script setup lang="ts">
-import { initModals } from "flowbite";
 const emitters = defineEmits(["submit-form","hide-modal"]);
 const props = defineProps({
   idModal: {
@@ -76,6 +75,10 @@ const props = defineProps({
     type: String,
     default: "titulo",
   },
+  btnSave:{
+    type: String,
+    default: "Save changes"
+  }
 });
 
 function hideModal(){
