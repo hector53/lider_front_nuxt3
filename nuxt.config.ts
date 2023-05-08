@@ -13,7 +13,8 @@ export default defineNuxtConfig({
   apollo: {
     clients: {
       default: {
-        httpEndpoint: 'http://localhost:4000/graphql'
+        //httpEndpoint: 'http://localhost:4000/graphql'
+        httpEndpoint: 'https://backend.lider.io/graphql'
       }
     },
   },
