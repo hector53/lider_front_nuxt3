@@ -5,6 +5,9 @@
     font-family: IBM Plex Sans;
     line-height: 1.6;
     padding: 20px;
+    display: flex;
+    justify-content: center;
+    flex-direction: column;
 }
 .modal-info-title h2{
     font-weight: 600;
@@ -18,4 +21,9 @@
     font-size: 14px;
     font-weight: 400;
     color: #95969B;
+}
+.processors_connect_images{
+    display: flex;
+    justify-content: center;
+    margin-bottom: 20px;
 }

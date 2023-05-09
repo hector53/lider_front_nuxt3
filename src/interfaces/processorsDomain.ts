@@ -6,5 +6,6 @@ export interface ProcessorsDomain {
   private_key: string;
   active: boolean;
   processor_name: string;
+  processor_description: string;
   processor_image: string;
 }

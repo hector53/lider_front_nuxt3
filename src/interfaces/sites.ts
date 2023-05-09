@@ -30,6 +30,7 @@ export interface ProcessorSite {
 }
 
 export interface DomainsSelect {
+  name: string;
   url: string;
   _id: string;
 }

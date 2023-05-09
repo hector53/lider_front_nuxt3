@@ -352,7 +352,7 @@ max-width: initial;
 }
 
 .status-badge{
-    width: 75px;
+    width: auto;
     display: flex;
     padding: 4px 6px;
     align-items: center;
@@ -366,6 +366,9 @@ max-width: initial;
 }
 .status-badge.error{
   background-color: rgba(255, 233, 236, 1);
+}
+.status-badge.secondary{
+  background-color: #F4F4F4;
 }
 .status-badge img{
   width: 16px;

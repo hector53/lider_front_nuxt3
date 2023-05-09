@@ -159,7 +159,7 @@
                 :key="i"
                 :value="item._id"
               >
-                {{ item.url }}
+                {{ item.name }}
               </option>
             </select>
           </div>
@@ -661,7 +661,6 @@ async function deleteSiteDb(id: string) {
   }
 }
 
-
 async function submitForm() {
   console.log("submit form");
   v$.value.$validate();
@@ -739,10 +738,12 @@ function hideModal() {
 }
 
 async function get_data_form_edit() {
+  console.log("entrando a get data form edit")
   const query = gql`
     query {
       domains {
         _id
+        name
         url
       }
       usersSites {
@@ -780,12 +781,14 @@ async function get_data_form_edit() {
 }
 
 async function editSiteModal(row: Site) {
+  formEditSite.site = row;
   console.log("row edit", row);
-  if (row.assigned_domain != "" || row.assigned_domain != null) {
+  if (row.assigned_domain != "" || row.assigned_domain!=null) {
+    console.log("si tiene valor el assigned domain");
     await get_processors_site_by_domain(row.assigned_domain);
   }
   await get_data_form_edit();
-  formEditSite.site = row;
+  
   //ahora cargar las cosas
 
   modalEditSite.value.toggle();
@@ -860,7 +863,11 @@ async function changeActiveSite(id: string, active: boolean) {
 }
 
 async function selectDomain(e: Event) {
-  await get_processors_site_by_domain((e.target as HTMLSelectElement).value);
+  const value = (e.target as HTMLSelectElement).value
+  if(value!=null){
+    await get_processors_site_by_domain(value);
+  }
+  
 }
 
 onMounted(() => {

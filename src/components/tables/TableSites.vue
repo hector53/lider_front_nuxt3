@@ -27,17 +27,17 @@
     </div>
 
     <div class="relative overflow-x-auto mt-10">
-      <table class="table-auto text-sm text-left">
+      <table class="w-full text-sm text-left">
         <thead class="uppercase">
           <tr>
-            <th scope="col" class="px-6 py-3 text-lef" style="width: 160px;">Creation date</th>
-            <th scope="col" class="px-6 py-3 text-center">Status</th>
-            <th scope="col" class="px-6 py-3 text-center">Site</th>
-            <th scope="col" class="px-6 py-3 text-center">Webhooks</th>
-            <th scope="col" class="px-6 py-3 text-center" style="width: 300px;" >
+            <th scope="col" class="px-4 py-3 text-lef" >Creation date</th>
+            <th scope="col" class="px-4 py-3 text-center">Status</th>
+            <th scope="col" class="px-4 py-3 text-center">Site</th>
+            <th scope="col" class="px-4 py-3 text-center">Webhooks</th>
+            <th scope="col" class="px-4 py-3 text-center" >
               Processor
             </th>
-            <th scope="col" class="px-6 py-3 text-center"></th>
+            <th scope="col" class="px-4 py-3 text-center"></th>
           </tr>
         </thead>
         <tbody>
@@ -46,8 +46,8 @@
             v-for="(row, index) in props.sites?.sites"
             :key="index"
           >
-            <td class="px-6 py-4 capitalize">{{ convertDate(row.created) }}</td>
-            <td class="px-6 py-4 capitalize">
+            <td class="px-4 py-4 capitalize">{{ convertDate(row.created) }}</td>
+            <td class="px-4 py-4 capitalize">
               <div v-if="row.active" class="status-badge success">
                 <div class="status-image">
                   <img
@@ -66,15 +66,16 @@
                 <span>Disable</span>
               </div>
             </td>
-            <td class="px-6 py-4">{{ row.site }}</td>
-            <td class="px-6 py-4">{{ row.webhook }}</td>
-            <td class="px-6 py-4">
+            <td class="px-4 py-4">{{ row.site }}</td>
+            <td class="px-4 py-4">{{ row.webhook }}</td>
+            <td class="px-4 py-4">
               
               <div  style="width: 250px; display: flex;
     flex-wrap: wrap;">
                 <div
                   class="flex justify-start items-center mb-2 processorSite"
                   v-for="(item, index2) in row.processorsSites" :key="index2"
+                  v-show="index2<2 "
                 >
                   <img
                     :src="urlApi + '/uploads/' + item.processor_image"
@@ -84,6 +85,7 @@
                   <span>{{ item.processor_name }}</span>
                 </div>
                 <div
+                v-if="row.processorsSites.length>2"
                   class="flex justify-start items-center mb-2 processorSite"
                 >
                   <span>+2</span>
@@ -93,8 +95,8 @@
               
             </td>
 
-            <td class="px-6 py-4">
-              <div class="flex justify-center items-center">
+            <td class="px-4 py-4">
+              <div class="flex justify-end items-center">
                 <label class="relative inline-flex items-center cursor-pointer">
                   <input
                     type="checkbox"

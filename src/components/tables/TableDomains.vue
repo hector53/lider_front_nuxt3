@@ -9,6 +9,32 @@
       <template #content>
         <form>
           <div class="mb-6 relative">
+            <label for="name" class="font-normal text-sm">Name</label>
+            <input
+              type="text"
+              id="name"
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+              placeholder="Enter name"
+              name="name"
+              v-model="form.name"
+              @blur="v$.name.$touch"
+              :class="{
+                'border-red-500 focus:border-red-500': v$.name.$error,
+              }"
+            />
+            <div v-if="v$.name.$error">
+              <ul>
+                <li
+                  v-for="(error, index) in v$.name.$errors"
+                  :key="index"
+                  class="mt-2 text-sm text-red-600 dark:text-red-500"
+                >
+                  {{ error.$message }}
+                </li>
+              </ul>
+            </div>
+          </div>
+          <div class="mb-6 relative">
             <label for="url" class="font-normal text-sm">Url</label>
             <input
               type="url"
@@ -80,17 +106,24 @@
           <thead class="uppercase">
             <tr>
               <th scope="col" class="px-6 py-3 text-lef">#</th>
+              <th scope="col" class="px-6 py-3 text-left">Name</th>
               <th scope="col" class="px-6 py-3 text-left">Url</th>
               <th scope="col" class="px-6 py-3 text-center">Active</th>
               <th scope="col" class="px-6 py-3 text-center">Created</th>
               <th
                 scope="col"
                 class="px-6 py-3 text-center"
-                style="width: 170px"
+                style="width: 300px"
               >
                 Processors
               </th>
-              <th scope="col" class="px-6 py-3 text-center">Options</th>
+              <th
+                scope="col"
+                class="px-6 py-3 text-center"
+                style="width: 300px"
+              >
+                Options
+              </th>
             </tr>
           </thead>
           <tbody>
@@ -100,6 +133,7 @@
               :key="index"
             >
               <th scope="row" class="px-6 py-4">{{ index + 1 }}</th>
+              <td class="px-6 py-4">{{ row.name }}</td>
               <td class="px-6 py-4">{{ row.url }}</td>
               <td class="px-6 py-4 text-center">
                 <label class="relative inline-flex items-center cursor-pointer">
@@ -122,16 +156,30 @@
                 {{ convertDate(row.created) }}
               </td>
               <td class="px-6 py-4 text-center">
-                <processor-item
-                  v-for="(item, index) in row.domainprocessors"
-                  :key="index"
-                  :name="item.processor[0].name"
-                  :image="item.processor[0].image"
-                  :active="item.active.valueOf()"
-                ></processor-item>
+                <div style="width: 250px; display: flex; flex-wrap: wrap">
+                  <div
+                    class="flex justify-start items-center mb-2 processorSite"
+                    v-for="(item, index2) in row.domainprocessors"
+                    :key="index2"
+                    v-show="index2<2"
+                  >
+                    <img
+                      :src="urlApi + '/uploads/' + item.processor[0].image"
+                      alt=""
+                      class="mr-2 w-5"
+                    />
+                    <span>{{ item.processor[0].name }}</span>
+                  </div>
+                  <div
+                    v-if="row.domainprocessors.length > 2"
+                    class="flex justify-start items-center mb-2 processorSite"
+                  >
+                    <span>+2</span>
+                  </div>
+                </div>
               </td>
               <td class="px-6 py-4">
-                <div class="flex">
+                <div class="flex justify-end items-center">
                   <button class="btnContentHeader1 mr-5" @click="editRow(row)">
                     <img
                       src="~/assets/playground_assets/pencilfill9110-b58h.svg?url"
@@ -148,9 +196,10 @@
                     <span> Delete </span>
                   </button>
                   <button
-                    class="btnContentHeader1 mr-5"
+                    class="btnContentHeader1 mr-5 minBtn"
                     @click="view_processors(row._id)"
                   >
+                  <img src="~/assets/playground_assets/arrow-left-right-line.svg?url" />
                     <span> Processors </span>
                   </button>
                 </div>
@@ -221,8 +270,9 @@ interface DomainProcessor {
 
 interface Domain {
   _id?: string;
+  name: string;
   url: string;
-  domainprocessors?: DomainProcessor[];
+  domainprocessors: DomainProcessor[];
   active?: boolean;
   created: string;
   updated: string;
@@ -240,11 +290,15 @@ const dataDomains = reactive({
 });
 
 const form = reactive({
+  name: "",
   url: "",
 });
 
 const rules = computed(() => {
   return {
+    name: {
+      required: helpers.withMessage("The name field is required", required),
+    },
     url: {
       required: helpers.withMessage("The url field is required", required),
       url,
@@ -424,6 +478,7 @@ function editRow(domain: Domain) {
   editForm.value = true;
   //@ts-ignore
   idEditRow.value = domain._id;
+  form.name = domain.name;
   form.url = domain.url;
   modal.value.toggle();
 }

@@ -7,32 +7,8 @@
       @hide-modal="hideModal()"
     >
       <template #content>
-        <div class="modal-info-title">
-          <div class="processors_connect_images">
-            <img
-              v-if="data.openModal"
-              :src="urlApi + '/uploads/' + data.processorSelected.image"
-              alt=""
-              class="mr-3"
-            />
-            <img
-              src="~/assets/playground_assets/arrow-left-right-line.svg?url"
-              alt=""
-              class="mr-3"
-            />
-            <img
-              src="~/assets/playground_assets/liderProcessor.svg?url"
-              alt=""
-            />
-          </div>
-          <h2>Connect {{ data.processorSelected.name }} to Lider</h2>
-          <p>
-            A suite of payment APIs that powers commerce for online businesses
-            of all sizes
-          </p>
-        </div>
         <form>
-          <div class="mb-6 relative" v-show="editForm == false">
+          <div class="mb-6 relative">
             <label for="processors" class="font-normal text-sm"
               >Processors</label
             >
@@ -40,12 +16,15 @@
               id="processors"
               class="border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
               v-model="form.processor_id"
-              @change="setProcessorSelected"
               @blur="v$.processor_id.$touch"
               :class="{
                 'border-red-500 focus:border-red-500': v$.processor_id.$error,
               }"
             >
+              <option value="" v-if="editForm == false">Select one</option>
+              <option :value="form.processor_id" v-else>
+                {{ nameProcessorEdit }}
+              </option>
               <option
                 :value="processor._id"
                 v-for="(processor, index) in data.listProcessors"
@@ -108,7 +87,7 @@
     <BlockContentHeader>
       <template #title>
         Processors of:
-        <span class="text-xl">{{ data.nameDomain }}</span></template
+        <span class="text-xl">{{ data.domainUrl }}</span></template
       >
       <template #options>
         <button class="btnContentHeader1 mr-5" @click="abrirModal()">
@@ -119,16 +98,12 @@
         </button>
       </template>
     </BlockContentHeader>
-    <div class="container max-w-8xl pt-3 pb-16 mt-7 mx-auto">
-      <block-processor-domain
-        :border="getBorder(index)"
-        v-for="(item, index) in data.listProcessorsDomains"
-        :key="index"
-        :processor="item"
-        @delete-row="deleteRow"
-        @connect-processor="changeStatusProcessor"
-      ></block-processor-domain>
-    </div>
+    <table-processors-domain
+      :rows="data.listProcessorsDomains"
+      @change-status-processor="changeStatusProcessor"
+      @delete-row="deleteRow"
+      @edit-row="editRow"
+    ></table-processors-domain>
   </div>
 </template>
 
@@ -157,10 +132,7 @@ console.log("route domain", route);
 const data = reactive({
   listProcessorsDomains: [] as ProcessorsDomain[],
   domainUrl: "",
-  nameDomain: "",
-  processorSelected: {} as Processor,
   listProcessors: [] as Processor[],
-  openModal: false
 });
 const form = reactive({
   processor_id: "",
@@ -181,43 +153,18 @@ const rules = computed(() => {
 
 const v$ = useVuelidate(rules, form);
 
-async function get_processor_of_list(id: string) {
-  for (const item of data.listProcessors) {
-    if (item._id == id) {
-      data.processorSelected = item;
-      return;
-    }
-  }
-  return;
-}
-
-async function abrirModal() {
-  if(data.listProcessors.length>0){
-    data.openModal=true
+function abrirModal() {
   editForm.value = false;
   //@ts-ignore
   idEditRow.value = "";
   form.processor_id = "";
   form.public_key = "";
   form.private_key = "";
-  const selectElement = document.getElementById(
-    "processors"
-  ) as HTMLSelectElement;
-  selectElement.value = selectElement.options[0].value;
-  form.processor_id = selectElement.value;
-  await get_processor_of_list(selectElement.value);
 
   modal.value.toggle();
-  }
-  
 }
 function hideModal() {
   modal.value.hide();
-}
-
-async function setProcessorSelected(e: Event) {
-  let processor = (e.target as HTMLSelectElement).value;
-  await get_processor_of_list(processor);
 }
 
 async function get_processors_domain() {
@@ -233,7 +180,7 @@ async function get_processors_domain() {
     );
     console.log("response", response);
     //@ts-ignore
-    data.nameDomain = response.domainName;
+    data.domainUrl = response.domainUrl;
     //@ts-ignore
     data.listProcessorsDomains = response.domainProcessors;
     //@ts-ignore
@@ -246,7 +193,6 @@ async function get_processors_domain() {
 
 async function add_processor_domain() {
   const $toast = useToast();
-
   try {
     const response = await $fetch(urlApi + "/domains-processors", {
       method: "POST",
@@ -305,36 +251,32 @@ async function submitForm() {
   }
 }
 
-async function changeStatusProcessor(row: ProcessorsDomain, active?: boolean) {
-  if (active) {
-    console.log("change active domain ", active);
-    const newStatus = !active;
-    try {
-      const $toast = useToast();
-      const response = await $fetch(
-        urlApi + "/domains-processors/" + row?._id + "/active",
-        {
-          method: "PUT",
-          headers: {
-            Authorization: "Bearer " + token,
-          },
-          body: {
-            active: newStatus,
-          },
-        }
-      );
-      console.log("response", response);
-      $toast.success("Processor update successfully");
-      get_processors_domain();
-      modal.value.hide();
-      formHttpError.value = "";
-    } catch (e) {
-      console.log("error", e);
-      //@ts-ignore
-      formHttpError.value = e.message;
-    }
-  } else {
-    editRow(row)
+async function changeStatusProcessor(id?: string, active?: boolean) {
+  console.log("change active domain ", active);
+  const newStatus = !active;
+  try {
+    const $toast = useToast();
+    const response = await $fetch(
+      urlApi + "/domains-processors/" + id + "/active",
+      {
+        method: "PUT",
+        headers: {
+          Authorization: "Bearer " + token,
+        },
+        body: {
+          active: newStatus,
+        },
+      }
+    );
+    console.log("response", response);
+    $toast.success("Processor update successfully");
+    get_processors_domain();
+    modal.value.hide();
+    formHttpError.value = "";
+  } catch (e) {
+    console.log("error", e);
+    //@ts-ignore
+    formHttpError.value = e.message;
   }
 }
 
@@ -359,30 +301,14 @@ async function deleteRowDb(id?: string) {
   }
 }
 
-function getBorder(index: number): string {
-  if (index === 0) {
-    return "top";
-  } else if (index === data.listProcessorsDomains.length - 1) {
-    return "bottom";
-  } else {
-    return "center";
-  }
-}
-
 function editRow(row: ProcessorsDomain) {
-  data.openModal = true
   editForm.value = true;
   //@ts-ignore
   idEditRow.value = row._id;
+  nameProcessorEdit.value = row.processor_name;
   form.processor_id = row.processor_id;
   form.public_key = row.public_key;
   form.private_key = row.private_key;
-  const rowProcessor:Processor = {} as Processor
-  rowProcessor._id = row.processor_id
-  rowProcessor.active = row.active
-  rowProcessor.name = row.processor_name
-  rowProcessor.image = row.processor_image
-  data.processorSelected = rowProcessor;
   modal.value.toggle();
 }
 

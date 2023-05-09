@@ -11,7 +11,13 @@
     min-width: 90px;
     justify-content: center;
 }
+.minBtn{
+    min-width: 120px;
+}
 @media (max-width: 768px) {
+    .minBtn{
+        min-width: 30px;
+    }
     .btnContentHeader1{
         min-width: 30px;
     }
