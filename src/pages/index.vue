@@ -106,12 +106,14 @@
 </template>
 
 <script setup>
+const route = useRoute();
 useHead({
   title: 'Lider | Home',
   meta: [
     { name: 'description', content: 'Dashboard page.' }
   ],
 })
+console.log("route",route)
 </script>
 
 <style lang="scss" scoped></style>

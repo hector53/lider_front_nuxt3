@@ -38,7 +38,7 @@
   <div class="home-toolbar2">
     <div class="container max-w-8xl px-2 py-3 mx-auto">
       <ul class="flex flex-col sm:flex-row justify-start items-center">
-        <li v-for="(item, index) in menuList" :key="index">
+        <li v-for="(item, index) in menuListReactive" :key="index">
           <nuxt-link class="text_header_toolbar2 capitalize"
            activeClass="active" :to="item.link"
             >{{item.title}}</nuxt-link

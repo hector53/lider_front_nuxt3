@@ -141,7 +141,7 @@
     <template #content>
       <div class="user-profile-description-settings grid grid-cols-12 mt-2">
         <div class="lg:col-span-6 col-span-full">
-          <user-item-settings :title="data.fullName" :subtitle="'Full name'">
+          <user-item-settings :capitalize="true" :title="data.fullName" :subtitle="'Full name'">
             <template #iconLeft>
               <img
                 src="~/assets/playground_assets/user6line9110-khwm.svg?url"

@@ -54,7 +54,7 @@
         </div>
       </div>
       <div class=" lg:col-span-9 md:col-span-7 col-span-full ">
-        <h1 class="pb-4">User Profile</h1>
+        <h1 class="pb-4"><slot name="title" >User Profile</slot></h1>
         <div class="bg-white mini-chart-card mt-2">
           <div class="md:pl-10 md:pr-10 pt-6 pb-6 pl-2 pr-2">
             <div class="user-profile-description-header flex sm:flex-row sm:justify-between flex-col">
