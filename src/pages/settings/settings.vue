@@ -46,6 +46,7 @@
       </form>
     </template>
   </ModalStatic>
+
   <NuxtLayout name="user-profile">
     <template #title> Settings </template>
     <template #header>
@@ -57,8 +58,11 @@
         Edit
       </button>
     </template>
-    <template #content>
-      <div class="user-profile-description-settings grid grid-cols-12 mt-2">
+    <template #content v-if="Object.keys(data.siteUser).length > 0">
+      <div
+        class="user-profile-description-settings grid grid-cols-12 mt-2"
+        
+      >
         <div class="lg:col-span-6 col-span-full">
           <user-item-settings :title="data.siteUser.site" :subtitle="'Website'">
             <template #iconLeft>
@@ -202,15 +206,16 @@ async function get_site_by_id_user(id: string = payloadToken.id) {
 }
   `;
   try {
-    const response = await useAsyncQuery(query);
-    console.log("respise", response);
-    //@ts-ignore
-    data.siteUser = response.data.value.getSiteByUserId;
+    nextTick(async () => {
+      const response = await useAsyncQuery(query);
+      //@ts-ignore
+      data.siteUser = response.data.value.getSiteByUserId;
+    });
   } catch (e) {
     console.log("error", e);
   }
 }
-get_site_by_id_user();
+await get_site_by_id_user();
 
 async function submitForm() {
   //save changes webhook
@@ -229,11 +234,10 @@ async function submitForm() {
   try {
     const response = await useAsyncQuery(query);
     console.log("respise", response);
-    modal.value.hide()
+    modal.value.hide();
     $toast.success("Successfully edited");
     //@ts-ignore
-    get_site_by_id_user()
-
+    get_site_by_id_user();
   } catch (e) {
     console.log("error", e);
   }
@@ -249,7 +253,7 @@ function hideModal() {
   modal.value.hide();
 }
 
-onMounted(() => {
+onMounted(async () => {
   const $modalElement: any = document.querySelector("#modalWebhook");
   const modalOptions: ModalOptions = {
     placement: "center",

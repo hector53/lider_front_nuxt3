@@ -109,6 +109,7 @@ useHead({
 })
 
 const cookie = useCookie("token");
+const cookieGraphql = useCookie("tokenGraphql");
 const rememberMe = useCookie("rememberMe");
 
 //console.log("cookie", cookie)
@@ -176,6 +177,8 @@ const login = async () => {
     } else {
       const data = response.data.value;
       cookie.value = JSON.stringify(data);
+      //@ts-ignore
+      cookieGraphql.value = 'Bearer '+data.token
       if(checkRememberMe.value==true){
         rememberMe.value = JSON.stringify(params);
       }else{
