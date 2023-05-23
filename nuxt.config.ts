@@ -18,7 +18,7 @@ export default defineNuxtConfig({
     clients: {
       default: {
         //httpEndpoint: "http://localhost:4000/graphql",
-       httpEndpoint: "https://backend.lider.io/graphql",
+        httpEndpoint: "https://backend.lider.io/graphql",
         tokenName: "tokenGraphql",
         tokenStorage: "cookie",
         authType: "Bearer",
@@ -49,7 +49,7 @@ export default defineNuxtConfig({
       } else {
         return options.inverse(this);
       }
-    }
+    },
   },
 
   css: ["@/assets/css/main.scss"],

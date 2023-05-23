@@ -255,7 +255,7 @@
             </div>
             <div class="flex justify-between items-center">
               <span>Public API key</span>
-              <span>KAiNUDwYKdFGx</span>
+              <span>{{formEditSite.site.public_key}}</span>
             </div>
             <div class="flex justify-between items-center">
               <span>Private token</span>
