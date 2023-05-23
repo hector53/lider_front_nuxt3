@@ -17,8 +17,8 @@ export default defineNuxtConfig({
     autoImports: true,
     clients: {
       default: {
-        httpEndpoint: "http://localhost:4000/graphql",
-        //   httpEndpoint: "https://backend.lider.io/graphql",
+        //httpEndpoint: "http://localhost:4000/graphql",
+       httpEndpoint: "https://backend.lider.io/graphql",
         tokenName: "tokenGraphql",
         tokenStorage: "cookie",
         authType: "Bearer",
