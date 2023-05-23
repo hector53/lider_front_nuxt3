@@ -588,7 +588,7 @@ async function get_sites() {
     console.log("error", e);
   }
 }
-await get_sites();
+
 
 async function edit_site() {}
 
@@ -650,7 +650,6 @@ async function deleteSiteDb(id: string) {
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    get_sites();
     $toast.success("Site delete successfully");
     formHttpError.value = "";
     await get_sites();
@@ -908,6 +907,9 @@ onMounted(() => {
   modal.value = new Modal($modalElement, modalOptions);
   modalEditSite.value = new Modal($modalElementEditSite, modalOptionsEditSite);
 });
+nextTick(async () => {
+      await get_sites()
+    });
 </script>
 
 <style scoped></style>

@@ -64,6 +64,7 @@
 interface ProcessorInterface {
   _id?: string;
   name: string;
+  identy: string;
   description: string;
   fee: number;
   image: string;

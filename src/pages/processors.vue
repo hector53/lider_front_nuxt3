@@ -35,6 +35,19 @@
             </div>
           </div>
           <div class="mb-6 relative">
+            <label for="identy" class="font-normal text-sm">Identy</label>
+            <input
+              type="text"
+              id="identy"
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+              placeholder="Enter processor identy"
+              name="identy"
+              v-model="form.identy"
+            />
+           
+          </div>
+
+          <div class="mb-6 relative">
             <label for="description" class="font-normal text-sm"
               >Description</label
             >
@@ -166,6 +179,7 @@ const form = reactive({
   title: "",
   description: "",
   fee: 0,
+  identy: "",
   image: null as File | null,
 });
 const rules = computed(() => {
@@ -226,6 +240,7 @@ function editRow(row: Processor) {
   imageEditRow.value = row.image
   form.title = row.name
   form.description = row.description
+  form.identy = row.identy
   form.fee = row.fee
   
   modal.value.toggle();
@@ -317,6 +332,7 @@ async function edit_processor(){
   const formData = new FormData();
   formData.append("name", form.title);
   formData.append("description", form.description);
+  formData.append("identy", form.identy);
   formData.append("fee", form.fee.toString());
   if (form.image && form.image instanceof File) {
     formData.append("image", form.image);
@@ -335,6 +351,7 @@ async function edit_row_without_image(formData:FormData){
       },
       body: {
         "name": form.title, 
+        "identy": form.identy, 
         "description": form.description,
         "fee": form.fee
       },

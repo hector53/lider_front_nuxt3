@@ -34,6 +34,10 @@ export const menuList = [
     link: "/domains",
   },
   {
+    title: "templates",
+    link: "/templates",
+  },
+  {
     title: "settings",
     link: "/settings",
   },

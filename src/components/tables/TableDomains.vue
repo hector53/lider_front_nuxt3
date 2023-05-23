@@ -61,6 +61,13 @@
             </div>
           </div>
 
+          <div class="mb-6 relative" v-if="editForm">
+            <label for="token_domain" class="font-normal text-sm">Domain Token: {{ dataDomains.token_domain }}</label>
+           
+          </div>
+
+          
+
           <div
             v-if="formHttpError != ''"
             class="mt-3 bg-red-100 border border-red-400 text-red-700 px-4 py-3 rounded relative"
@@ -272,6 +279,7 @@ interface Domain {
   _id?: string;
   name: string;
   url: string;
+  token: string;
   domainprocessors: DomainProcessor[];
   active?: boolean;
   created: string;
@@ -287,6 +295,7 @@ const dataDomains = reactive({
   totalPages: 0,
   limitPages: 2,
   search: "",
+  token_domain: ""
 });
 
 const form = reactive({
@@ -480,6 +489,7 @@ function editRow(domain: Domain) {
   idEditRow.value = domain._id;
   form.name = domain.name;
   form.url = domain.url;
+  dataDomains.token_domain = domain.token
   modal.value.toggle();
 }
 async function changeStatusDomain(
