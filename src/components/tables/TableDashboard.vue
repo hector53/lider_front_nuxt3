@@ -30,16 +30,15 @@
         <table class="w-full text-sm text-left">
           <thead class="uppercase">
             <tr>
-              <th scope="col" class="px-6 py-3">order</th>
-              <th scope="col" class="px-6 py-3">creation date</th>
-              <th scope="col" class="px-6 py-3">invoice</th>
-              <th scope="col" class="px-6 py-3">processor</th>
-              <th scope="col" class="px-6 py-3">currency</th>
-              <th scope="col" class="px-6 py-3">gross amount</th>
-              <th scope="col" class="px-6 py-3">fees</th>
-              <th scope="col" class="px-6 py-3">net amount</th>
-              <th scope="col" class="px-6 py-3">amount conversion</th>
-              <th scope="col" class="px-6 py-3">receive url</th>
+              <th scope="col" class="px-6 py-3 text-center" >creation date</th>
+              <th scope="col" class="px-6 py-3 text-center">invoice</th>
+              <th scope="col" class="px-6 py-3 text-center">processor</th>
+              <th scope="col" class="px-6 py-3 text-center">currency</th>
+              <th scope="col" class="px-6 py-3 text-center">gross amount</th>
+              <th scope="col" class="px-6 py-3 text-center">service fee</th>
+              <th scope="col" class="px-6 py-3 text-center">net amount</th>
+              <th scope="col" class="px-6 py-3 text-center">usd net value</th>
+              <th scope="col" class="px-6 py-3 text-center">receipt url</th>
             </tr>
           </thead>
           <tbody>
@@ -48,11 +47,10 @@
               v-for="(row, index) in props.paymentsData?.payments"
               :key="index"
             >
-              <td class="px-4 py-4">{{ index + 1 }}</td>
-              <td class="px-4 py-4 capitalize">{{ convertDate(row.created) }}</td>
-              <td class="px-4 py-4">{{ row.invoice }}</td>
-              <td class="px-4 py-4">
-                <div class="flex justify-start items-center">
+              <td class="px-4 py-4 capitalize text-center">{{ convertDate(row.created) }}</td>
+              <td class="px-4 py-4 text-center">{{ row.invoice }}</td>
+              <td class="px-4 py-4 text-center">
+                <div class="flex justify-center items-center">
                   <img
                     :src="urlApi + '/uploads/' + row.processor[0].image"
                     alt=""
@@ -61,12 +59,12 @@
                   <span >{{ row.processor[0].name }}</span>
                 </div>
               </td>
-              <td class="px-4 py-4">{{ row.currency }}</td>
-              <td class="px-4 py-4">{{ row.amount }}</td>
-              <td class="px-4 py-4">{{ row.fee }}</td>
-              <td class="px-4 py-4">{{ row.net_amount }}</td>
-              <td class="px-4 py-4">{{ row.amount_conversion }}</td>
-              <td class="px-4 py-4"><a style="color:rgba(102, 90, 235, 1)" :href="row.receipt_url" target="_blank" >Receipt</a></td>
+              <td class="px-4 py-4 text-center">{{ row.currency }}</td>
+              <td class="px-4 py-4 text-center">{{ row.amount }}</td>
+              <td class="px-4 py-4 text-center">{{ row.fee }}</td>
+              <td class="px-4 py-4 text-center">{{ row.net_amount }}</td>
+              <td class="px-4 py-4 text-center">{{ row.amount_conversion }}</td>
+              <td class="px-4 py-4 text-center"><a style="color:rgba(102, 90, 235, 1)" :href="row.receipt_url" target="_blank" >Receipt</a></td>
             </tr>
           </tbody>
         </table>
@@ -138,6 +136,9 @@
       day: "numeric",
       month: "long",
       year: "numeric",
+      hour: "numeric",
+      minute: "numeric",
+      second: "numeric"
     };
     const formattedDate = date.toLocaleDateString("en-US", options);
     return formattedDate;
