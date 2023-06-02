@@ -63,7 +63,7 @@
               <td class="px-4 py-4 text-center">{{ row.amount }}</td>
               <td class="px-4 py-4 text-center">{{ row.fee }}</td>
               <td class="px-4 py-4 text-center">{{ row.net_amount }}</td>
-              <td class="px-4 py-4 text-center">{{ row.amount_conversion }}</td>
+              <td class="px-4 py-4 text-center">{{ row.amount_conversion.toFixed(2) }}</td>
               <td class="px-4 py-4 text-center"><a style="color:rgba(102, 90, 235, 1)" :href="row.receipt_url" target="_blank" >Receipt</a></td>
             </tr>
           </tbody>
