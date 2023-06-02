@@ -14,7 +14,7 @@
       </template>
     </BlockContentHeader>
 
-    <div class="container max-w-8xl px-2 py-3 mx-auto">
+    <div class="container max-w-8xl px-2 py-3 mx-auto" v-if="data.dataCargada">
       <div
         class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-4"
       >
@@ -72,8 +72,11 @@
             <img src="~/assets/playground_assets/vector17475-uvw.svg?url" />
           </template>
         </mini-chart-dash>
-        <mini-chart-dash :title="data.TotalSales.value.toString()" 
-        :subtitle="'Total'" :porcentaje="data.TotalSales.porcentaje">
+        <mini-chart-dash
+          :title="data.TotalSales.value.toString()"
+          :subtitle="'Total'"
+          :porcentaje="data.TotalSales.porcentaje"
+        >
           <template #icon>
             <img
               src="~/assets/playground_assets/arrowdownline7475-yuzs.svg?url"
@@ -111,7 +114,7 @@
     </div>
 
     <table-dashboard
-      v-if="data.paymentsData"
+      v-if="data.dataCargada"
       :paymentsData="data.paymentsData"
       @next-page="nextPage"
       @previous-page="previousPage"
@@ -128,6 +131,7 @@ useHead({
   meta: [{ name: "description", content: "Dashboard page." }],
 });
 const data = reactive({
+  dataCargada: false,
   paymentsData: {
     payments: [],
     count: 0,
@@ -207,11 +211,12 @@ async function get_payments_dashboard() {
     //@ts-ignore
     data.paymentsData = response.data.value.paymentsByAdmin;
     //@ts-ignore
-    data.dailySales = response.data.value.dailySales
+    data.dailySales = response.data.value.dailySales;
     //@ts-ignore
-    data.MonthlySales = response.data.value.MonthlySales
+    data.MonthlySales = response.data.value.MonthlySales;
     //@ts-ignore
-    data.TotalSales = response.data.value.TotalSales
+    data.TotalSales = response.data.value.TotalSales;
+    data.dataCargada = true;
   } catch (e) {
     console.log("error", e);
   }
