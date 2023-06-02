@@ -40,6 +40,11 @@
         <span>Not configure</span>
       </div>
 
+      <button class="btnContentHeader1 mr-5" @click="editRow(processor)">
+        <img src="~/assets/playground_assets/pencilfill9110-b58h.svg?url" />
+        <span> Edit </span>
+      </button>
+
       <button class="btnContentHeader1 mr-5" @click="deleteRow(processor?._id)">
         <img src="~/assets/playground_assets/delete-bin-4-fill.svg?url" />
         <span> Delete </span>

@@ -125,6 +125,7 @@
         v-for="(item, index) in data.listProcessorsDomains"
         :key="index"
         :processor="item"
+        @edit-row="editRow"
         @delete-row="deleteRow"
         @connect-processor="changeStatusProcessor"
       ></block-processor-domain>

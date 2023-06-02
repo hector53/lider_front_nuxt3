@@ -281,6 +281,7 @@ async function get_templates() {
     identy
     image
     fee
+    fee_type
   }
     }
   `;
