@@ -9,11 +9,15 @@ export interface ProcessorSiteDomain {
   site_id: string;
   processor_name: string;
 
+  processor_identy: string; 
+
   processor_image: string;
 
   processor_fee: string;
 
   custom_fee: string;
+
+  hosted: boolean;
 
   fee_extra: FEE_EXTRA_;
 
@@ -54,6 +58,8 @@ export interface Site {
 
   site: string;
 
+  nameStore: string;
+
   amounts?: string;
   fee_quantity: boolean;
 
@@ -68,6 +74,8 @@ export interface Site {
   template_multiple?: string;
 
   language?: string;
+
+  success_url?: string;
 
   currency: string[];
 

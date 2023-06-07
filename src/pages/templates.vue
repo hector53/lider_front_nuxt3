@@ -119,44 +119,48 @@
               >
             </li>
           </ul>
-          <MonacoEditor
-            class="editor"
-            v-model="data.templateEdit.html"
+          <ClientOnly>
+            <codemirror
             v-if="data.tabHtmlPreview == 0"
-          />
+              v-model="data.templateEdit.html"
+              :style="{ height: '400px', textAlign: 'left' }"
+              :autofocus="true"
+              :indent-with-tab="true"
+              :tab-size="2"
+            ></codemirror>
+          </ClientOnly>
+
           <div v-html="data.htmlPreview" v-if="data.tabHtmlPreview == 1"></div>
 
           <div v-if="data.tabHtmlPreview == 2">
-            
-
-            <ul class="space-y-4 text-gray-500 list-disc list-inside dark:text-gray-400">
-    <li>
-        languaje
-        <ol class="pl-5 mt-2 space-y-1 list-decimal list-inside">
-            <li>titleHeader </li>
-            <li>titleOrder </li>
-            <li>payWithCard </li>
-            <li>footerTitle </li>
-            <li>feeExtra </li>
-        </ol>
-    </li>
-    <li>      urlImage    </li>
-    <li>      nameStore    </li>
-    <li>      invoice    </li>
-    <li>      amount    </li>
-    <li>      currency    </li>
-    <li>
-      processors[], es un array con los procesadores como items, con las siguientes propiedades:
-        <ul class="pl-5 mt-2 space-y-1 list-decimal list-inside">
-            <li>name</li>
-            <li>image</li>
-            <li>fee</li>
-        </ul>
-    </li>
-</ul>
-
-
-           
+            <ul
+              class="space-y-4 text-gray-500 list-disc list-inside dark:text-gray-400"
+            >
+              <li>
+                languaje
+                <ol class="pl-5 mt-2 space-y-1 list-decimal list-inside">
+                  <li>titleHeader</li>
+                  <li>titleOrder</li>
+                  <li>payWithCard</li>
+                  <li>footerTitle</li>
+                  <li>feeExtra</li>
+                </ol>
+              </li>
+              <li>urlImage</li>
+              <li>nameStore</li>
+              <li>invoice</li>
+              <li>amount</li>
+              <li>currency</li>
+              <li>
+                processors[], es un array con los procesadores como items, con
+                las siguientes propiedades:
+                <ul class="pl-5 mt-2 space-y-1 list-decimal list-inside">
+                  <li>name</li>
+                  <li>image</li>
+                  <li>fee</li>
+                </ul>
+              </li>
+            </ul>
           </div>
         </div>
       </template>
@@ -182,6 +186,7 @@
 </template>
 
 <script setup lang="ts">
+import { Codemirror } from "vue-codemirror";
 import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url } from "@vuelidate/validators";
@@ -200,6 +205,13 @@ const modalEditTemplate = ref();
 useHead({
   title: "Lider | Templates",
   meta: [{ name: "description", content: "Templates page." }],
+  script: [
+    {
+      src: "https://cdn.jsdelivr.net/npm/ace-builds@1.22.0/src-min-noconflict/ace.min.js",
+      type: "text/javascript",
+      async: true,
+    },
+  ],
 });
 
 const data = reactive({

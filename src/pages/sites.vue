@@ -103,6 +103,18 @@
           </div>
 
           <div class="mb-6 relative">
+            <label for="site" class="font-normal text-sm">Name store</label>
+            <input
+              type="url"
+              id="site"
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+              placeholder="Enter a name store"
+              name="site"
+              v-model="formEditSite.site.nameStore"
+            />
+          </div>
+
+          <div class="mb-6 relative">
             <label for="amounts" class="font-normal text-sm">Amounts</label>
             <input
               type="text"
@@ -241,6 +253,18 @@
             </select>
           </div>
 
+          <div class="mb-6 relative">
+            <label for="success_url" class="font-normal text-sm">Success url</label>
+            <input
+              type="text"
+              id="success_url"
+              class="appearance-none border rounded w-full py-2 px-3 text-gray-700 leading-tight focus:outline-none focus:shadow-outline focus:border-[#665AEC]"
+              placeholder="Enter success url"
+              name="success_url"
+              v-model="formEditSite.site.success_url"
+            />
+          </div>
+
           <div class="settings_keys_site mb-6">
             <div class="flex justify-between items-center">
               <span class="labelBold">Settings</span>
@@ -255,7 +279,7 @@
             </div>
             <div class="flex justify-between items-center">
               <span>Public API key</span>
-              <span>{{formEditSite.site.public_key}}</span>
+              <span>{{ formEditSite.site.public_key }}</span>
             </div>
             <div class="flex justify-between items-center">
               <span>Private token</span>
@@ -284,7 +308,11 @@
             "
           >
             <h3 class="labelBold mb-6">Processors</h3>
-            <div v-for="(item, i) in formEditSite.processorsSites" :key="i">
+            <div
+              v-for="(item, i) in formEditSite.processorsSites"
+              :key="i"
+             :class="{'processorSiteLoop': (i+1) < formEditSite.processorsSites.length }"
+            >
               <div class="mb-6 flex justify-between items-center">
                 <div class="flex justify-start items-center">
                   <img
@@ -355,6 +383,27 @@
                     v-model="item.custom_fee"
                   />
                 </div>
+              </div>
+
+              <div
+                class="mb-6 flex justify-between items-center pl-4"
+                v-if="item.active && item.processor_identy == 'stripe'"
+              >
+                <span>Hosted</span>
+                <label class="relative inline-flex items-center cursor-pointer">
+                  <input
+                    type="checkbox"
+                    value="hosted"
+                    class="sr-only peer"
+                    v-model="item.hosted"
+                  />
+                  <div
+                    class="w-11 h-6 bg-gray-200 peer-focus:outline-none peer-focus:ring-4 peer-focus:ring-blue-300 dark:peer-focus:ring-blue-800 rounded-full peer dark:bg-gray-700 peer-checked:after:translate-x-full peer-checked:after:border-white after:content-[''] after:absolute after:top-[2px] after:left-[2px] after:bg-white after:border-gray-300 after:border after:rounded-full after:h-5 after:w-5 after:transition-all dark:border-gray-600 peer-checked:bg-blue-600"
+                  ></div>
+                  <span
+                    class="ml-3 text-sm font-medium text-gray-900 dark:text-gray-300"
+                  ></span>
+                </label>
               </div>
             </div>
           </div>
@@ -549,6 +598,7 @@ async function get_sites() {
     sites {
       _id
       site
+      nameStore
       amounts
       fee_quantity
       webhook
@@ -557,6 +607,7 @@ async function get_sites() {
       template_individual
       template_multiple
       language
+      success_url
       currency
       processorsSites{
         _id
@@ -588,7 +639,6 @@ async function get_sites() {
     console.log("error", e);
   }
 }
-
 
 async function edit_site() {}
 
@@ -684,6 +734,7 @@ async function submitFormEditSite() {
   updateSite(updateSiteInput:{
     _id: "${formEditSite.site._id}"
     site: "${formEditSite.site.site}"
+    nameStore: "${formEditSite.site.nameStore}"
     amounts: "${formEditSite.site.amounts}"
     fee_quantity:${formEditSite.site.fee_quantity}
     webhook: "${formEditSite.site.webhook}"
@@ -692,6 +743,7 @@ async function submitFormEditSite() {
     template_individual: "${formEditSite.site.template_individual}"
     template_multiple: "${formEditSite.site.template_multiple}"
     language: "${formEditSite.site.language}"
+    success_url: "${formEditSite.site.success_url}"
     currency: [${formEditSite.site.currency
       .map((currency) => `"${currency}"`)
       .join(", ")}]
@@ -706,6 +758,7 @@ async function submitFormEditSite() {
             value: ${site.fee_extra.value}
           }
           custom_fee: ${site.custom_fee}
+          hosted: ${site.hosted}
           active: ${site.active}
         }`
           )
@@ -737,7 +790,7 @@ function hideModal() {
 }
 
 async function get_data_form_edit() {
-  console.log("entrando a get data form edit")
+  console.log("entrando a get data form edit");
   const query = gql`
     query {
       domains {
@@ -782,12 +835,12 @@ async function get_data_form_edit() {
 async function editSiteModal(row: Site) {
   formEditSite.site = row;
   console.log("row edit", row);
-  if (row.assigned_domain != "" || row.assigned_domain!=null) {
+  if (row.assigned_domain != "" || row.assigned_domain != null) {
     console.log("si tiene valor el assigned domain");
     await get_processors_site_by_domain(row.assigned_domain);
   }
   await get_data_form_edit();
-  
+
   //ahora cargar las cosas
 
   modalEditSite.value.toggle();
@@ -816,7 +869,9 @@ async function get_processors_site_by_domain(domain_id: string | undefined) {
       value
     }
     custom_fee
+    hosted
     processor_name
+    processor_identy
     processor_image
     processor_fee
     active
@@ -862,11 +917,10 @@ async function changeActiveSite(id: string, active: boolean) {
 }
 
 async function selectDomain(e: Event) {
-  const value = (e.target as HTMLSelectElement).value
-  if(value!=null){
+  const value = (e.target as HTMLSelectElement).value;
+  if (value != null) {
     await get_processors_site_by_domain(value);
   }
-  
 }
 
 onMounted(() => {
@@ -908,8 +962,8 @@ onMounted(() => {
   modalEditSite.value = new Modal($modalElementEditSite, modalOptionsEditSite);
 });
 nextTick(async () => {
-      await get_sites()
-    });
+  await get_sites();
+});
 </script>
 
 <style scoped></style>

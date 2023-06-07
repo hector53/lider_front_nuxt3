@@ -8,8 +8,7 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "nuxt-icon",
     "@tailvue/nuxt",
-    "@nuxtjs/apollo",
-    "nuxt-monaco-editor",
+    "@nuxtjs/apollo"
   ],
 
   //@ts-ignore
@@ -17,7 +16,7 @@ export default defineNuxtConfig({
     autoImports: true,
     clients: {
       default: {
-     //   httpEndpoint: "http://localhost:4000/graphql",
+       // httpEndpoint: "http://localhost:4000/graphql",
            httpEndpoint: "https://backend.lider.io/graphql",
         tokenName: "tokenGraphql",
         tokenStorage: "cookie",
@@ -40,17 +39,6 @@ export default defineNuxtConfig({
     "~/components/elements",
     "~/components/tables",
   ],
-  //@ts-ignore
-  extendHelpers: {
-    //@ts-ignore
-    isEqual: function (a, b, options) {
-      if (a === b) {
-        return options.fn(this);
-      } else {
-        return options.inverse(this);
-      }
-    }
-  },
 
   css: ["@/assets/css/main.scss"],
 
