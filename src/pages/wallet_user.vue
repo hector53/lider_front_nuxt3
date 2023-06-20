@@ -276,7 +276,7 @@
         <button
           class="btnContentHeader1 mr-5"
           @click="abrirModal()"
-          v-if="data.showTable==false"
+          v-if="data.showBtnNew"
         >
           <img
             src="~/assets/playground_assets/usersharedline7476-sslo.svg?url"
@@ -318,7 +318,8 @@ const data = reactive({
   wallet: {} as Wallet,
   search: "",
   limit: 10,
-  page: 1
+  page: 1,
+  showBtnNew: false,
 });
 
 const form = reactive({
@@ -398,7 +399,9 @@ async function get_wallets() {
       //@ts-ignore
       data.wallet = response.data.value.getWalletUser;
       data.showTable = true;
-    } 
+    } else {
+      data.showBtnNew = true;
+    }
 
     console.log("wallets", data.wallet);
   } catch (e) {
