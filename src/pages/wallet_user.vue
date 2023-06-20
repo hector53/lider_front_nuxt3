@@ -276,6 +276,7 @@
         <button
           class="btnContentHeader1 mr-5"
           @click="abrirModal()"
+          v-if="data.showTable==false"
         >
           <img
             src="~/assets/playground_assets/usersharedline7476-sslo.svg?url"
@@ -317,7 +318,7 @@ const data = reactive({
   wallet: {} as Wallet,
   search: "",
   limit: 10,
-  page: 1,
+  page: 1
 });
 
 const form = reactive({
@@ -393,9 +394,12 @@ async function get_wallets() {
   try {
     const response = await useAsyncQuery(query);
     console.log("respise", response);
-    //@ts-ignore
-    data.wallet = response.data.value.getWalletUser;
-    data.showTable = true;
+    if (response.data.value != null) {
+      //@ts-ignore
+      data.wallet = response.data.value.getWalletUser;
+      data.showTable = true;
+    } 
+
     console.log("wallets", data.wallet);
   } catch (e) {
     console.log("error", e);
