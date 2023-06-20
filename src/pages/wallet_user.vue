@@ -276,7 +276,6 @@
         <button
           class="btnContentHeader1 mr-5"
           @click="abrirModal()"
-          v-if="data.wallet._id == ''"
         >
           <img
             src="~/assets/playground_assets/usersharedline7476-sslo.svg?url"
@@ -426,6 +425,7 @@ async function update_wallet() {
         routing_number:"${form.detailsWire.routing_number}"
       }
       typeEwallet:"${form.typeEwallet}"
+      user_id:"${payloadToken.id}"
     }){
       wallet
     }
