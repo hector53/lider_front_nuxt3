@@ -399,6 +399,7 @@ async function get_wallets() {
       //@ts-ignore
       data.wallet = response.data.value.getWalletUser;
       data.showTable = true;
+      data.showBtnNew = false;
     } else {
       data.showBtnNew = true;
     }
