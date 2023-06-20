@@ -40,7 +40,7 @@
           </slot>
         </div>
         <!-- Modal footer -->
-        <div
+        <div v-if="props.showBtns"
           class="flex justify-end items-center p-6 space-x-2 border-t border-gray-200 rounded-b"
         >
          
@@ -82,6 +82,10 @@ const props = defineProps({
   sizeModal: {
     type: String,
     default: 'max-w-lg'
+  },
+  showBtns: {
+    type: Boolean,
+    default: true
   }
 });
 

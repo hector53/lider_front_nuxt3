@@ -26,6 +26,8 @@ export interface Payments {
 
   fee: number;
 
+  fee_extra: number;
+
   net_amount: number;
 
   amount_conversion: number;

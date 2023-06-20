@@ -243,6 +243,8 @@ const data = reactive({
         image: "",
         name: "",
         identy: "",
+        fee_extra:7,
+        fee_type: "%",
         fee: "",
       },
     },
@@ -294,6 +296,7 @@ async function get_templates() {
     image
     fee
     fee_type
+    fee_extra
   }
     }
   `;

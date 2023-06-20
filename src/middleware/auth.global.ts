@@ -3,7 +3,7 @@ import { env } from "process";
 export default defineNuxtRouteMiddleware(async (to, from) => {
   //  console.log("to", to);
   // console.log("from,", from);
-  let rutasUser = ['index', 'settings', 'settings-user-profile', 'settings-settings' ]
+  let rutasUser = ['index', 'wallet_user', 'withdraws_user', 'settings', 'settings-user-profile', 'settings-settings' ]
   if (to.name != "login") {
     const cookie = useCookie("token");
     if (!cookie.value) {
@@ -22,6 +22,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
       const { payload, protectedHeader } = await jose.jwtVerify(token, secret);
       // Si el token es válido, podemos almacenar la información del usuario en el objeto $auth
       console.log("token valido ", payload);
+      //@ts-ignore
       setPayloadToken(payload)
       roleUser = payload.r
     } catch (e) {

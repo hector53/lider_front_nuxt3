@@ -60,7 +60,7 @@
                 </div>
               </td>
               <td class="px-4 py-4 text-center">{{ row.currency }}</td>
-              <td class="px-4 py-4 text-center">{{ row.amount }}</td>
+              <td class="px-4 py-4 text-center">{{ row.amount + row.fee_extra }}</td>
               <td class="px-4 py-4 text-center">{{ row.fee }}</td>
               <td class="px-4 py-4 text-center">{{ row.net_amount }}</td>
               <td class="px-4 py-4 text-center">{{ row.amount_conversion.toFixed(2) }}</td>

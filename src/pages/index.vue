@@ -162,12 +162,13 @@ const data = reactive({
 async function get_payments_dashboard() {
   const query = gql`
     query {
-      paymentsByAdmin(page: ${data.page}, limit: ${data.limit}, search: "${data.search}") {
+      paymentsByAdmin(page: ${data.page}, limit: ${data.limit}, search: "${data.search}", user_id: "${payloadToken.id}") {
         payments {
           invoice
           amount
           currency
           fee
+          fee_extra
           net_amount
           amount_conversion
           receipt_url

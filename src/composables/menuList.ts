@@ -22,6 +22,10 @@ export const menuList = [
     link: "/withdraws",
   },
   {
+    title: "wallets",
+    link: "/wallet",
+  },
+  {
     title: "processors",
     link: "/processors",
   },
@@ -47,6 +51,15 @@ export const menuListUser = [
   {
     title: "dashboard",
     link: "/",
+  },
+  {
+    title: "wallet",
+    link: "/wallet_user",
+  },
+
+  {
+    title: "withdraws",
+    link: "/withdraws_user",
   },
 
   {

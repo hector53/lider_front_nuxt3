@@ -542,7 +542,7 @@ useHead({
 const data = reactive({
   sites: {} as () => SitePagination,
   search: "",
-  limit: 2,
+  limit: 10,
   page: 1,
 });
 
