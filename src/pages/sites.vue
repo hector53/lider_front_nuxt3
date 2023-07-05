@@ -387,7 +387,7 @@
 
               <div
                 class="mb-6 flex justify-between items-center pl-4"
-                v-if="item.active && item.processor_identy == 'stripe'"
+                v-if="item.active "
               >
                 <span>Hosted</span>
                 <label class="relative inline-flex items-center cursor-pointer">

@@ -19,7 +19,7 @@
         class="grid grid-cols-1 xl:grid-cols-6 lg:grid-cols-5 md:grid-cols-4 sm:grid-cols-2 gap-4"
       >
         <mini-chart-dash
-          :title="data.MonthlySales.ordenes.toString()"
+          :title="convertAmount(data.MonthlySales.ordenes)"
           :subtitle="'Orders'"
           :porcentaje="data.MonthlySales.porcentaje"
         >
@@ -39,7 +39,7 @@
           </template>
         </mini-chart-dash>
         <mini-chart-dash
-          :title="data.dailySales.value.toString()"
+          :title="convertAmount(data.dailySales.value)"
           :subtitle="'Daily sales'"
           :porcentaje="data.dailySales.porcentaje"
         >
@@ -59,7 +59,7 @@
           </template>
         </mini-chart-dash>
         <mini-chart-dash
-          :title="data.MonthlySales.value.toString()"
+          :title="convertAmount(data.MonthlySales.value)"
           :subtitle="'Monthly sales'"
           :porcentaje="data.MonthlySales.porcentaje"
         >
@@ -73,7 +73,7 @@
           </template>
         </mini-chart-dash>
         <mini-chart-dash
-          :title="data.TotalSales.value.toString()"
+          :title="convertAmount(data.TotalSales.value)"
           :subtitle="'Total'"
           :porcentaje="data.TotalSales.porcentaje"
         >
@@ -97,7 +97,7 @@
           </template>
         </mini-chart-dash>
         <mini-chart-dash
-          :title="data.TotalSales.value.toString()"
+          :title="convertAmount(data.TotalSales.value)"
           :subtitle="'Available'"
           :porcentaje="data.TotalSales.porcentaje"
         >
@@ -142,7 +142,7 @@ const data = reactive({
     previousPage: 0,
   },
   search: "",
-  limit: 10,
+  limit: 50,
   page: 1,
   dailySales: {
     porcentaje: 0,
@@ -221,6 +221,11 @@ async function get_payments_dashboard() {
   } catch (e) {
     console.log("error", e);
   }
+}
+
+function convertAmount(amount:number){
+  console.log("amount", amount)
+  return amount.toFixed(2).toString()
 }
 
 async function searchTable(search: string) {

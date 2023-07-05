@@ -289,12 +289,14 @@ async function add_processor() {
   const formData = new FormData();
   formData.append("name", form.title);
   formData.append("description", form.description);
+  formData.append("identy", form.identy);
   formData.append("fee", form.fee.toString());
   if (form.image && form.image instanceof File) {
     formData.append("image", form.image);
   }
   console.log(formData.get("name"));
   console.log(formData.get("description"));
+  console.log(formData.get("identy"));
   console.log(formData.get("fee"));
   console.log(formData.get("image"));
   try {
