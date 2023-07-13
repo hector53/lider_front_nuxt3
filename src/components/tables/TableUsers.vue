@@ -163,6 +163,12 @@
         </form>
       </template>
     </ModalStatic>
+    <ModalDelete
+      :title="'User'"
+      @submit-form="deleteUserDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title> Users</template>
       <template #options>
@@ -299,7 +305,8 @@ import { required, helpers, minLength, email } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import passwordValidator from "password-validator";
 import type { ValidatorFn, ValidationArgs } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+import { showToast } from "~/composables/toastLiderPro";
+
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
 //@ts-ignore
@@ -331,7 +338,9 @@ const error = reactive({
 const formHttpError = ref("");
 const editUserForm = ref(false);
 const idUserEdit = ref("");
+const idDelete = ref("");
 const modal = ref();
+const modalDelete = ref();
 const dataUsers = reactive({
   users: [] as User[],
   count: 0,
@@ -500,7 +509,11 @@ async function submitForm() {
 }
 function deleteUser(id: string | undefined) {
   //@ts-ignore
-  $swal
+  idDelete.value = id;
+  modalDelete.value.show();
+  //@ts-ignore
+  /**
+   $swal
     .fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -515,30 +528,30 @@ function deleteUser(id: string | undefined) {
         deleteUserDb(id);
       }
     });
+   */
 }
-async function deleteUserDb(id: string | undefined) {
+async function deleteUserDb() {
   try {
-    const $toast = useToast();
-    const response = await $fetch(urlApi + "/users/" + id, {
+    const response = await $fetch(urlApi + "/users/" + idDelete.value, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     console.log("response", response);
-    $toast.success("User delete successfully");
+    showToast("User delete successfully", "bottom", 3000);
     get_users();
-    modal.value.hide();
+    modalDelete.value.hide();
     formHttpError.value = "";
   } catch (e) {
     console.log("error", e);
+    modalDelete.value.hide();
     //@ts-ignore
     formHttpError.value = e.message;
   }
 }
 async function edit_user() {
   try {
-    const $toast = useToast();
     const response = await $fetch(urlApi + "/users/" + idUserEdit.value, {
       method: "PUT",
       headers: {
@@ -547,7 +560,7 @@ async function edit_user() {
       body: form,
     });
     console.log("response", response);
-    $toast.success("User inserted successfully");
+    showToast("User updated successfully", "bottom", 3000);
     get_users();
     modal.value.hide();
     formHttpError.value = "";
@@ -559,7 +572,6 @@ async function edit_user() {
 }
 
 async function add_user() {
-  const $toast = useToast();
   const response = await useAsyncData(async () => {
     return await $fetch(
       // @ts-ignore
@@ -583,7 +595,7 @@ async function add_user() {
   } else {
     const data: any = response.data.value;
     console.log("response", data);
-    $toast.success("User inserted successfully");
+    showToast("User inserted successfully", "bottom", 3000);
     get_users();
     modal.value.hide();
     formHttpError.value = "";
@@ -594,15 +606,18 @@ function abrirModal() {
   editUserForm.value = false;
   //@ts-ignore
   idUserEdit.value = "";
-  form.fullName = ""
-  form.email = ""
-  form.role = ""
-  form.password = ""
-  form.role = "user"
+  form.fullName = "";
+  form.email = "";
+  form.role = "";
+  form.password = "";
+  form.role = "user";
   modal.value.toggle();
 }
 function hideModal() {
   modal.value.hide();
+}
+function hideModalDelete() {
+  modalDelete.value.hide();
 }
 
 function editUser(user: User) {
@@ -615,11 +630,13 @@ function editUser(user: User) {
   form.password = "User1234*";
   modal.value.toggle();
 }
-async function changeStatusUser(id: string | undefined, status: boolean | undefined) {
+async function changeStatusUser(
+  id: string | undefined,
+  status: boolean | undefined
+) {
   console.log("change active user ", status);
   const newStatusUser = !status;
   try {
-    const $toast = useToast();
     const response = await $fetch(urlApi + "/users/" + id + "/active", {
       method: "PUT",
       headers: {
@@ -630,7 +647,7 @@ async function changeStatusUser(id: string | undefined, status: boolean | undefi
       },
     });
     console.log("response", response);
-    $toast.success("User update successfully");
+    showToast("User update successfully", "bottom", 3000);
     get_users();
     modal.value.hide();
     formHttpError.value = "";
@@ -642,6 +659,23 @@ async function changeStatusUser(id: string | undefined, status: boolean | undefi
 }
 onMounted(async () => {
   const $modalElement: any = document.querySelector("#modalUser");
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   const modalOptions: ModalOptions = {
     placement: "center",
     backdrop: "static",
@@ -659,7 +693,13 @@ onMounted(async () => {
     },
   };
   modal.value = new Modal($modalElement, modalOptions);
-
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
   await get_users();
+  /*  const $toast = useToast();
+  $toast.success("asasdads", {
+    position: "bottom", 
+    duration: 0
+  })
+*/
 });
 </script>

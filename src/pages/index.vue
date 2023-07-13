@@ -21,7 +21,7 @@
         <mini-chart-dash
           :title="convertAmount(data.MonthlySales.ordenes)"
           :subtitle="'Orders'"
-          :porcentaje="data.MonthlySales.porcentaje"
+          :porcentaje="data.MonthlySales.porcentajeOrdenes.toFixed(2)"
         >
           <template #icon>
             <img
@@ -41,7 +41,7 @@
         <mini-chart-dash
           :title="convertAmount(data.dailySales.value)"
           :subtitle="'Daily sales'"
-          :porcentaje="data.dailySales.porcentaje"
+          :porcentaje="data.dailySales.porcentaje.toFixed(2)"
         >
           <template #icon>
             <img
@@ -116,9 +116,12 @@
     <table-dashboard
       v-if="data.dataCargada"
       :paymentsData="data.paymentsData"
+      :dateRange="dateRange"
+      :dateRangeActive="dateRangeActive"
       @next-page="nextPage"
       @previous-page="previousPage"
       @search-table="searchTable"
+      @change-dateRange="changeDateRange"
     ></table-dashboard>
   </div>
 </template>
@@ -130,6 +133,8 @@ useHead({
   title: "Lider | Home",
   meta: [{ name: "description", content: "Dashboard page." }],
 });
+const dateRange = ref();
+const dateRangeActive = ref(false);
 const data = reactive({
   dataCargada: false,
   paymentsData: {
@@ -142,7 +147,7 @@ const data = reactive({
     previousPage: 0,
   },
   search: "",
-  limit: 50,
+  limit: 10,
   page: 1,
   dailySales: {
     porcentaje: 0,
@@ -152,6 +157,8 @@ const data = reactive({
     porcentaje: 0,
     value: 0,
     ordenes: 3,
+    ordenesPrevious: 0,
+    porcentajeOrdenes: 0,
   },
   TotalSales: {
     porcentaje: 0,
@@ -160,6 +167,8 @@ const data = reactive({
 });
 
 async function get_payments_dashboard() {
+  let dateRangeJson = JSON.stringify(dateRange.value);
+  console.log("dateRangeJson", dateRangeJson);
   const query = gql`
     query {
       paymentsByAdmin(page: ${data.page}, limit: ${data.limit}, search: "${data.search}", user_id: "${payloadToken.id}") {
@@ -199,8 +208,10 @@ async function get_payments_dashboard() {
       value
       porcentaje
       ordenes
+      ordenesPrevious
+      porcentajeOrdenes
       }
-      TotalSales(id:"${payloadToken.id}"){
+      TotalSales(id:"${payloadToken.id}", date: ${dateRangeJson}, rangeActive: ${dateRangeActive.value}){
       value
       porcentaje
       }
@@ -223,9 +234,9 @@ async function get_payments_dashboard() {
   }
 }
 
-function convertAmount(amount:number){
-  console.log("amount", amount)
-  return amount.toFixed(2).toString()
+function convertAmount(amount: number) {
+  console.log("amount", amount);
+  return amount.toFixed(2).toString();
 }
 
 async function searchTable(search: string) {
@@ -243,7 +254,20 @@ async function previousPage(page: number) {
   await get_payments_dashboard();
 }
 
+async function changeDateRange(dateRang: Date[], dateRangeAct: boolean) {
+  console.log("dateRange", dateRang);
+  console.log("dateRangeActive", dateRangeAct);
+  dateRange.value = dateRang;
+  dateRangeActive.value = dateRangeAct;
+  await get_payments_dashboard()
+}
+
 onMounted(() => {
+  const startDate = new Date(new Date().getFullYear(), 0, 1); // 1 de enero del año actual
+
+  const endDate = new Date(); // fecha actual
+  dateRange.value = [startDate, endDate];
+  console.log("dateRange", dateRange.value);
   nextTick(async () => {
     await get_payments_dashboard();
   });

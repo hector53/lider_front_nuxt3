@@ -168,9 +168,10 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url, minValue } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+
 import { Wallet, WalletPagination } from "~/interfaces/wallet";
 import { WithdrawsUserPagination } from "~/interfaces/withdraws";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const formHttpError = ref("");
 const editForm = ref(false);
@@ -206,7 +207,7 @@ const v$ = useVuelidate(rules, form);
 
 async function create_transaction() {
   try {
-    const $toast = useToast();
+  
 
     const mutation = gql`
     mutation{
@@ -241,13 +242,13 @@ async function create_transaction() {
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
     if (response.data.value != null) {
-      $toast.success("wallet add successfully");
+      showToast("Withdraw add successfully", "bottom", 3000)
       await get_withdraws();
       modal.value.hide();
     } else {
-      modal.value.hide();
       //@ts-ignore
-      $toast.danger(response.error.value.message);
+  //    $toast.danger(response.error.value.message);
+  formHttpError.value = response.error.value.message;
     }
   } catch (e) {
     console.log("error", e);

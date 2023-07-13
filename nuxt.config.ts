@@ -8,16 +8,18 @@ export default defineNuxtConfig({
     "@nuxtjs/google-fonts",
     "nuxt-icon",
     "@tailvue/nuxt",
-    "@nuxtjs/apollo"
+    "@nuxtjs/apollo", 
+
   ],
+
 
   //@ts-ignore
   apollo: {
     autoImports: true,
     clients: {
       default: {
-      //  httpEndpoint: "http://localhost:4000/graphql",
-           httpEndpoint: "https://backend.lider.io/graphql",
+        httpEndpoint: "http://localhost:4000/graphql",
+     //      httpEndpoint: "https://backend.lider.io/graphql",
         tokenName: "tokenGraphql",
         tokenStorage: "cookie",
         authType: "Bearer",
@@ -40,7 +42,7 @@ export default defineNuxtConfig({
     "~/components/tables",
   ],
 
-  css: ["@/assets/css/main.scss"],
+  css: ["@/assets/css/main.scss", "vue-toast-notification/dist/theme-bootstrap.css"],
 
   runtimeConfig: {
     jwtSecret:
@@ -52,4 +54,7 @@ export default defineNuxtConfig({
       link: [{ rel: "icon", type: "image/png", href: iconFavicon }],
     },
   },
+  build:{
+    transpile: ['@vuepic/vue-datepicker']
+  }
 });

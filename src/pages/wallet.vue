@@ -269,7 +269,12 @@
         </form>
       </template>
     </ModalStatic>
-
+    <ModalDelete
+      :title="'Wallet'"
+      @submit-form="deleteWalletDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title> Wallets users</template>
       <template #options>
@@ -298,13 +303,16 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+
 import { WalletAdmin, WalletPagination } from "~/interfaces/wallet";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const formHttpError = ref("");
 const editForm = ref(false);
 const idEditRow = ref("");
+const idDelete = ref("")
 const modal = ref();
+const modalDelete = ref();
 const modalEditSite = ref();
 useHead({
   title: "Lider | Wallet",
@@ -414,8 +422,7 @@ async function get_wallets() {
 
 async function update_wallet() {
   try {
-    const $toast = useToast();
-
+    
     const mutation = gql`
       mutation {
         updateWallet(updateWalletInput:{
@@ -442,7 +449,7 @@ async function update_wallet() {
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("wallet add successfully");
+    showToast("Wallet add successfully", "bottom", 3000)
     await get_wallets();
     modal.value.hide();
     formHttpError.value = "";
@@ -511,8 +518,18 @@ function abrirModal() {
   idEditRow.value = "";
   modal.value.toggle();
 }
+function hideModalDelete() {
+  modalDelete.value.hide();
+}
 
-onMounted(() => {
+onMounted(async () => {
+ 
+  await iniciar_modals()
+  nextTick(async () => {
+    await get_wallets();
+  });
+});
+async function iniciar_modals(){
   const $modalElement: any = document.querySelector("#modalAddWallet");
   const modalOptions: ModalOptions = {
     placement: "center",
@@ -531,10 +548,25 @@ onMounted(() => {
     },
   };
   modal.value = new Modal($modalElement, modalOptions);
-  nextTick(async () => {
-    await get_wallets();
-  });
-});
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
+}
 async function searchTable(search: string) {
   data.search = search;
   await get_wallets();
@@ -550,7 +582,9 @@ async function nextPage(page: number) {
   await get_wallets();
 }
 function deteleWallet(id: string) {
+
   //@ts-ignore
+  /*
   $swal
     .fire({
       title: "Are you sure?",
@@ -566,22 +600,23 @@ function deteleWallet(id: string) {
         deleteWalletDb(id);
       }
     });
+    */
+    idDelete.value = id
+    modalDelete.value.show()
 }
 
-async function deleteWalletDb(id: string) {
+async function deleteWalletDb() {
   try {
-    const $toast = useToast();
-
     const mutation = gql`
       mutation {
-        removeWallet(id: "${id}") {
+        removeWallet(id: "${idDelete.value}") {
           _id
         }
       }
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("Wallet delete successfully");
+    showToast("Wallet delete successfully", "bottom", 3000)
     formHttpError.value = "";
     await get_wallets();
   } catch (e) {

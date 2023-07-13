@@ -105,6 +105,13 @@
         </form>
       </template>
     </ModalStatic>
+    
+    <ModalDelete
+      :title="'Processor Domain'"
+      @submit-form="deleteRowDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title>
         Processors of:
@@ -140,7 +147,7 @@ import { required, helpers } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import { ProcessorsDomain } from "~/interfaces/processorsDomain";
 import { Processor } from "~/interfaces/processors";
-import { useToast } from "tailvue";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const route = useRoute();
 const router = useRouter();
@@ -150,7 +157,8 @@ const editForm = ref(false);
 const idEditRow = ref("");
 const nameProcessorEdit = ref("");
 const modal = ref();
-
+const idDelete = ref("")
+const modalDelete = ref();
 //@ts-ignore
 const token = cookie.value.token;
 console.log("route domain", route);
@@ -246,7 +254,7 @@ async function get_processors_domain() {
 }
 
 async function add_processor_domain() {
-  const $toast = useToast();
+
 
   try {
     const response = await $fetch(urlApi + "/domains-processors", {
@@ -257,7 +265,7 @@ async function add_processor_domain() {
       body: form,
     });
     console.log("response", response);
-    $toast.success("processor created successfully");
+    showToast("Processor created successfully", "bottom", 3000)
     get_processors_domain();
     modal.value.hide();
     formHttpError.value = "";
@@ -269,7 +277,7 @@ async function add_processor_domain() {
 }
 async function edit_processor_domain() {
   try {
-    const $toast = useToast();
+
     const response = await $fetch(
       urlApi + "/domains-processors/" + idEditRow.value,
       {
@@ -281,7 +289,7 @@ async function edit_processor_domain() {
       }
     );
     console.log("response", response);
-    $toast.success("Processor updated successfully");
+    showToast("Processor updated successfully", "bottom", 3000)
     get_processors_domain();
     modal.value.hide();
     formHttpError.value = "";
@@ -311,7 +319,7 @@ async function changeStatusProcessor(row: ProcessorsDomain, active?: boolean) {
     console.log("change active domain ", active);
     const newStatus = !active;
     try {
-      const $toast = useToast();
+     
       const response = await $fetch(
         urlApi + "/domains-processors/" + row?._id + "/active",
         {
@@ -325,7 +333,7 @@ async function changeStatusProcessor(row: ProcessorsDomain, active?: boolean) {
         }
       );
       console.log("response", response);
-      $toast.success("Processor update successfully");
+      showToast("Processor update successfully", "bottom", 3000)
       get_processors_domain();
       modal.value.hide();
       formHttpError.value = "";
@@ -339,19 +347,19 @@ async function changeStatusProcessor(row: ProcessorsDomain, active?: boolean) {
   }
 }
 
-async function deleteRowDb(id?: string) {
+async function deleteRowDb() {
   try {
-    const $toast = useToast();
-    const response = await $fetch(urlApi + "/domains-processors/" + id, {
+    
+    const response = await $fetch(urlApi + "/domains-processors/" + idDelete.value, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     console.log("response", response);
-    $toast.success("Processor delete successfully");
+    showToast("Processor delete successfully", "bottom", 3000)
+    modalDelete.value.hide()
     get_processors_domain();
-    modal.value.hide();
     formHttpError.value = "";
   } catch (e) {
     console.log("error", e);
@@ -387,26 +395,33 @@ function editRow(row: ProcessorsDomain) {
   modal.value.toggle();
 }
 
-function deleteRow(id?: string) {
-  //@ts-ignore
-  $swal
-    .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    })
-    .then((result: any) => {
-      if (result.isConfirmed) {
-        deleteRowDb(id);
-      }
-    });
+function deleteRow(id: string) {
+  idDelete.value = id
+  modalDelete.value.show()
+}
+
+function hideModalDelete() {
+  modalDelete.value.hide();
 }
 
 onMounted(async () => {
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   const $modalElement: any = document.querySelector("#modalProcessorDomain");
   const modalOptions: ModalOptions = {
     placement: "center",
@@ -425,6 +440,7 @@ onMounted(async () => {
     },
   };
   modal.value = new Modal($modalElement, modalOptions);
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
   await get_processors_domain();
 });
 </script>

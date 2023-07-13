@@ -79,6 +79,12 @@
         </form>
       </template>
     </ModalStatic>
+    <ModalDelete
+      :title="'Domain'"
+      @submit-form="deleteRowDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title> Domains</template>
       <template #options>
@@ -252,7 +258,8 @@ import { required, helpers, email, url } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
 import passwordValidator from "password-validator";
 import type { ValidatorFn, ValidationArgs } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+import { showToast } from "~/composables/toastLiderPro";
+
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
 const router = useRouter();
@@ -263,7 +270,8 @@ const formHttpError = ref("");
 const editForm = ref(false);
 const idEditRow = ref("");
 const modal = ref();
-
+const idDelete = ref("")
+const modalDelete = ref();
 interface ProcessorData {
   name: string;
   image: string;
@@ -380,37 +388,23 @@ async function submitForm() {
     console.log("no esta bien validado");
   }
 }
-function deleteRow(id: string | undefined) {
-  //@ts-ignore
-  $swal
-    .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    })
-    .then((result: any) => {
-      if (result.isConfirmed) {
-        deleteRowDb(id);
-      }
-    });
+function deleteRow(id: string ) {
+  idDelete.value = id
+ modalDelete.value.show()
 }
-async function deleteRowDb(id: string | undefined) {
+async function deleteRowDb() {
   try {
-    const $toast = useToast();
-    const response = await $fetch(urlApi + "/domains/" + id, {
+   
+    const response = await $fetch(urlApi + "/domains/" + idDelete.value, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     console.log("response", response);
-    $toast.success("Domain delete successfully");
+    showToast("Domain delete successfully", "bottom", 3000)
     get_domains();
-    modal.value.hide();
+    modalDelete.value.hide();
     formHttpError.value = "";
   } catch (e) {
     console.log("error", e);
@@ -420,7 +414,7 @@ async function deleteRowDb(id: string | undefined) {
 }
 async function edit_domain() {
   try {
-    const $toast = useToast();
+
     const response = await $fetch(urlApi + "/domains/" + idEditRow.value, {
       method: "PUT",
       headers: {
@@ -429,7 +423,7 @@ async function edit_domain() {
       body: form,
     });
     console.log("response", response);
-    $toast.success("Domain updated successfully");
+    showToast("Domain updated successfully", "bottom", 3000)
     get_domains();
     modal.value.hide();
     formHttpError.value = "";
@@ -441,7 +435,7 @@ async function edit_domain() {
 }
 
 async function add_domain() {
-  const $toast = useToast();
+
   const response = await useAsyncData(async () => {
     return await $fetch(
       // @ts-ignore
@@ -465,7 +459,7 @@ async function add_domain() {
   } else {
     const data: any = response.data.value;
     console.log("response", data);
-    $toast.success("Domain inserted successfully");
+    showToast("Domain inserted successfully", "bottom", 3000)
     get_domains();
     modal.value.hide();
     formHttpError.value = "";
@@ -499,7 +493,7 @@ async function changeStatusDomain(
   console.log("change active domain ", status);
   const newStatus = !status;
   try {
-    const $toast = useToast();
+   
     const response = await $fetch(urlApi + "/domains/" + id + "/active", {
       method: "PUT",
       headers: {
@@ -510,7 +504,7 @@ async function changeStatusDomain(
       },
     });
     console.log("response", response);
-    $toast.success("Domain update successfully");
+    showToast("Domain update successfully", "bottom", 3000)
     get_domains();
     modal.value.hide();
     formHttpError.value = "";
@@ -519,6 +513,9 @@ async function changeStatusDomain(
     //@ts-ignore
     formHttpError.value = e.message;
   }
+}
+function hideModalDelete() {
+  modalDelete.value.hide();
 }
 onMounted(async () => {
   const $modalElement: any = document.querySelector("#modalDomain");
@@ -538,7 +535,25 @@ onMounted(async () => {
       console.log("modal has been toggled");
     },
   };
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   modal.value = new Modal($modalElement, modalOptions);
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
   await get_domains();
 });
 </script>

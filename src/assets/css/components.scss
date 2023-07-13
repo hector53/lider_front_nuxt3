@@ -433,3 +433,59 @@
 .grayCurrency{
   color: #95969B
 }
+
+
+.toastLider {
+  position: fixed;
+    z-index: 9999;
+    padding: 0.7rem 1rem;
+    border-radius: 50px;
+    background-color: #333;
+    color: #fff;
+    display: flex;
+    justify-content: center;
+    min-width: 300px;
+}
+.toastLider img {
+  margin-right: 10px;
+}
+
+.top {
+  top: 1rem;
+}
+
+.top-left {
+  top: 1rem;
+  left: 1rem;
+}
+
+.top-right {
+  top: 1rem;
+  right: 1rem;
+}
+
+.bottom {
+  bottom: 1rem;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.bottom-left {
+  bottom: 1rem;
+  left: 1rem;
+}
+
+.bottom-right {
+  bottom: 1rem;
+  right: 1rem;
+}
+
+.fade-enter-active,
+.fade-leave-active {
+  transition: opacity 0.5s;
+}
+
+.fade-enter,
+.fade-leave-to {
+  opacity: 0;
+}

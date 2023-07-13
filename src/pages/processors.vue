@@ -132,6 +132,12 @@
         </form>
       </template>
     </ModalStatic>
+    <ModalDelete
+      :title="'Processor'"
+      @submit-form="deleteRowDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title> Processors </template>
       <template #options>
@@ -160,8 +166,9 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast } from "tailvue";
+
 import { Processor } from "~/interfaces/processors";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
 //@ts-ignore
@@ -171,6 +178,8 @@ const editForm = ref(false);
 const idEditRow = ref("");
 const imageEditRow = ref("")
 const modal = ref();
+const modalDelete = ref();
+const idDelete = ref("")
 
 const dataProcessors = reactive({
   data: [] as Processor[],
@@ -246,19 +255,19 @@ function editRow(row: Processor) {
   modal.value.toggle();
 }
 
-async function deleteRowDb(id: string | undefined) {
+async function deleteRowDb() {
   try {
-    const $toast = useToast();
-    const response = await $fetch(urlApi + "/processors/" + id, {
+   
+    const response = await $fetch(urlApi + "/processors/" + idDelete.value, {
       method: "DELETE",
       headers: {
         Authorization: "Bearer " + token,
       },
     });
     console.log("response", response);
-    $toast.success("Processor delete successfully");
+    showToast("Processor delete successfully", "bottom", 3000);
     get_processors();
-    modal.value.hide();
+    modalDelete.value.hide()
     formHttpError.value = "";
   } catch (e) {
     console.log("error", e);
@@ -267,8 +276,11 @@ async function deleteRowDb(id: string | undefined) {
   }
 }
 
-function deleteRow(id?: string){
-//@ts-ignore
+function deleteRow(id: string){
+  idDelete.value = id
+  modalDelete.value.show()
+
+/*
 $swal
     .fire({
       title: "Are you sure?",
@@ -284,6 +296,8 @@ $swal
         deleteRowDb(id);
       }
     });
+
+    */
 }
 async function add_processor() {
   const formData = new FormData();
@@ -300,7 +314,7 @@ async function add_processor() {
   console.log(formData.get("fee"));
   console.log(formData.get("image"));
   try {
-    const $toast = useToast();
+    
     const response = await $fetch(urlApi + "/processors", {
       method: "POST",
       headers: {
@@ -309,7 +323,7 @@ async function add_processor() {
       body: formData,
     });
     console.log("response", response);
-    $toast.success("Processor created successfully");
+    showToast("Processor created successfully", "bottom", 3000);
     get_processors();
     modal.value.hide();
     formHttpError.value = "";
@@ -345,7 +359,7 @@ async function edit_processor(){
 }
 async function edit_row_without_image(formData:FormData){
   try {
-    const $toast = useToast();
+   
     const response = await $fetch(urlApi + "/processors/"+idEditRow.value+"/without_image", {
       method: "PUT",
       headers: {
@@ -359,7 +373,7 @@ async function edit_row_without_image(formData:FormData){
       },
     });
     console.log("response", response);
-    $toast.success("Processor updated successfully");
+    showToast("Processor updated successfully", "bottom", 3000);
     get_processors();
     modal.value.hide();
     formHttpError.value = "";
@@ -382,7 +396,7 @@ async function edit_row_without_image(formData:FormData){
 }
 async function edit_row_with_image(formData:FormData){
   try {
-    const $toast = useToast();
+   
     const response = await $fetch(urlApi + "/processors/"+idEditRow.value+"/with_image", {
       method: "PUT",
       headers: {
@@ -391,7 +405,7 @@ async function edit_row_with_image(formData:FormData){
       body: formData,
     });
     console.log("response", response);
-    $toast.success("Processor updated successfully");
+    showToast("Processor updated successfully", "bottom", 3000);
     get_processors();
     modal.value.hide();
     formHttpError.value = "";
@@ -431,7 +445,7 @@ async function Connect_processor(id: string, active: boolean) {
   console.log("connect processor", id, active)
   const newStatus = !active;
   try {
-    const $toast = useToast();
+   
     const response = await $fetch(urlApi + "/processors/" + id + "/active", {
       method: "PUT",
       headers: {
@@ -442,7 +456,7 @@ async function Connect_processor(id: string, active: boolean) {
       },
     });
     console.log("response", response);
-    $toast.success("Processor update successfully");
+    showToast("Processor update successfully", "bottom", 3000);
     get_processors();
     modal.value.hide();
     formHttpError.value = "";
@@ -468,6 +482,9 @@ async function get_processors() {
     console.log("error", e);
   }
 }
+function hideModalDelete() {
+  modalDelete.value.hide();
+}
 
 onMounted(async () => {
   const $modalElement: any = document.querySelector("#modalProcessor");
@@ -487,7 +504,25 @@ onMounted(async () => {
       console.log("modal has been toggled");
     },
   };
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   modal.value = new Modal($modalElement, modalOptions);
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
   await get_processors();
 });
 </script>

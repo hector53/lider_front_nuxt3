@@ -477,6 +477,13 @@
         </form>
       </template>
     </ModalStatic>
+
+    <ModalDelete
+      :title="'Site'"
+      @submit-form="deleteSiteDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
     <BlockContentHeader>
       <template #title> Your sites</template>
       <template #options>
@@ -523,7 +530,7 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+import { showToast } from "~/composables/toastLiderPro";
 
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
@@ -533,8 +540,10 @@ const token = cookie.value.token;
 const formHttpError = ref("");
 const editForm = ref(false);
 const idEditRow = ref("");
+const idDelete = ref("")
 const modal = ref();
 const modalEditSite = ref();
+const modalDelete = ref();
 useHead({
   title: "Lider | Sites",
   meta: [{ name: "description", content: "Sites page." }],
@@ -644,9 +653,7 @@ async function edit_site() {}
 
 async function add_site() {
   try {
-    const $toast = useToast();
-
-    const mutation = gql`
+        const mutation = gql`
       mutation {
         createSite(
           createSiteInput: { site: "${form.site}", webhook: "${form.webhook}" }
@@ -658,7 +665,7 @@ async function add_site() {
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("Site add successfully");
+    showToast("Site add successfully", "bottom", 3000)
     modal.value.hide();
     formHttpError.value = "";
     await get_sites();
@@ -670,7 +677,7 @@ async function add_site() {
 }
 function deleteSite(id: string) {
   //@ts-ignore
-  $swal
+ /* $swal
     .fire({
       title: "Are you sure?",
       text: "You won't be able to revert this!",
@@ -684,27 +691,29 @@ function deleteSite(id: string) {
       if (result.isConfirmed) {
         deleteSiteDb(id);
       }
-    });
+    });*/
+    idDelete.value = id
+    modalDelete.value.show()
 }
 
-async function deleteSiteDb(id: string) {
+async function deleteSiteDb() {
   try {
-    const $toast = useToast();
-
     const mutation = gql`
       mutation {
-        removeSite(id: "${id}") {
+        removeSite(id: "${idDelete.value}") {
           _id
         }
       }
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("Site delete successfully");
+    showToast("Site delete successfully", "bottom", 3000)
     formHttpError.value = "";
     await get_sites();
+    modalDelete.value.hide()
   } catch (e) {
     console.log("error", e);
+    modalDelete.value.hide()
     //@ts-ignore
     formHttpError.value = e.message;
   }
@@ -728,7 +737,7 @@ async function submitForm() {
 async function submitFormEditSite() {
   formEditSite.site.processorsSites = formEditSite.processorsSites;
   console.log("site enviar", formEditSite.site);
-  const $toast = useToast();
+
   const query = gql`
   mutation{
   updateSite(updateSiteInput:{
@@ -772,7 +781,7 @@ async function submitFormEditSite() {
   `;
   try {
     const response = await useAsyncQuery(query);
-    $toast.success("Site successfully edited");
+    showToast("Site successfully edited", "bottom", 3000)
     get_sites();
     modalEditSite.value.hide();
     console.log("respise", response);
@@ -910,7 +919,8 @@ async function changeActiveSite(id: string, active: boolean) {
   try {
     const response = await useAsyncQuery(query);
     console.log("respise", response);
-    get_sites();
+    await get_sites();
+    showToast("Site updated edited", "bottom", 2000)
   } catch (e) {
     console.log("error", e);
   }
@@ -923,7 +933,24 @@ async function selectDomain(e: Event) {
   }
 }
 
-onMounted(() => {
+async function iniciar_modals(){
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   const $modalElement: any = document.querySelector("#modalSite");
   const $modalElementEditSite: any = document.querySelector("#modalEditSite");
   const modalOptionsEditSite: ModalOptions = {
@@ -960,6 +987,13 @@ onMounted(() => {
   };
   modal.value = new Modal($modalElement, modalOptions);
   modalEditSite.value = new Modal($modalElementEditSite, modalOptionsEditSite);
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
+}
+function hideModalDelete() {
+  modalDelete.value.hide();
+}
+onMounted(async () => {
+  await iniciar_modals()
 });
 nextTick(async () => {
   await get_sites();

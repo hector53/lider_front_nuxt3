@@ -133,7 +133,8 @@
 </template>
 
 <script setup lang="ts">
-import { useToast } from "tailvue";
+
+import { showToast } from "~/composables/toastLiderPro";
 import { WithdrawsUserPagination, WithdrawUser } from "~/interfaces/withdraws";
 const props = defineProps({
   withdraws: {
@@ -164,11 +165,11 @@ function convertWallet(wallet: string  | any) {
 }
 
 function copiarWallet(wallet: string | any) {
-    const $toast = useToast();
+   
   navigator.clipboard
     .writeText(wallet) // Copiar al portapapeles
     .then(() => {
-        $toast.success("copy successfully");
+      showToast("Copy successfully", "bottom", 3000)
     })
     .catch((error) => {
       console.error("Error al copiar la wallet:", error);

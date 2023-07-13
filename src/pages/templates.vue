@@ -165,6 +165,15 @@
         </div>
       </template>
     </ModalStatic>
+
+    <ModalDelete
+      :title="'Template'"
+      @submit-form="deleteTemplateDb()"
+      @hide-modal="hideModalDelete()"
+    >
+    </ModalDelete>
+
+
     <BlockContentHeader>
       <template #title> Templates</template>
       <template #options>
@@ -191,9 +200,10 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+
 import { Template, TemplatePagination } from "~/interfaces/templates";
 import Handlebars from "handlebars";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const cookie = useCookie("token");
 //@ts-ignore
@@ -202,6 +212,9 @@ const formHttpError = ref("");
 const EditRow = ref({});
 const modal = ref();
 const modalEditTemplate = ref();
+const idDelete = ref("")
+const modalDelete = ref();
+
 useHead({
   title: "Lider | Templates",
   meta: [{ name: "description", content: "Templates page." }],
@@ -219,7 +232,7 @@ const data = reactive({
   search: "",
   limit: 10,
   page: 1,
-  tabHtmlPreview: 1,
+  tabHtmlPreview: 0,
   templateEdit: {} as Template,
   htmlPreview: "",
   arrayTest: ["uno", "dos", "tres"],
@@ -353,7 +366,7 @@ async function submitForm() {
   if (!v$.value.$error) {
     console.log("todo bien validado");
     try {
-      const $toast = useToast();
+
 
       const mutation = gql`
         mutation {
@@ -366,7 +379,7 @@ async function submitForm() {
       `;
       const response = await useAsyncQuery(mutation);
       console.log("response", response);
-      $toast.success("template add successfully");
+      showToast("Template add successfully.", "bottom", 3000)
       modal.value.hide();
       formHttpError.value = "";
       await get_templates();
@@ -381,7 +394,7 @@ async function submitForm() {
 }
 async function submitFormEdit() {
   try {
-    const $toast = useToast();
+    
     const response = await $fetch(urlApi + "/templates/update", {
       method: "POST",
       headers: {
@@ -393,7 +406,7 @@ async function submitFormEdit() {
       },
     });
     console.log("response", response);
-    $toast.success("Template update successfully");
+    showToast("Template update successfully", "bottom", 3000)
     get_templates();
     modalEditTemplate.value.hide();
     formHttpError.value = "";
@@ -408,38 +421,24 @@ function hideModal() {
 }
 
 function deleteTemplate(id: string) {
-  //@ts-ignore
-  $swal
-    .fire({
-      title: "Are you sure?",
-      text: "You won't be able to revert this!",
-      icon: "warning",
-      showCancelButton: true,
-      confirmButtonColor: "#3085d6",
-      cancelButtonColor: "#d33",
-      confirmButtonText: "Yes, delete it!",
-    })
-    .then((result: any) => {
-      if (result.isConfirmed) {
-        deleteTemplateDb(id);
-      }
-    });
+  idDelete.value = id
+  modalDelete.value.show()
+ 
 }
 
-async function deleteTemplateDb(id: string) {
+async function deleteTemplateDb() {
   try {
-    const $toast = useToast();
-
     const mutation = gql`
       mutation {
-        removeTemplate(id: "${id}") {
+        removeTemplate(id: "${idDelete.value}") {
           _id
         }
       }
     `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("template delete successfully");
+    modalDelete.value.hide()
+    showToast("template delete successfully", "bottom", 3000)
     formHttpError.value = "";
     await get_templates();
   } catch (e) {
@@ -461,7 +460,7 @@ function selectPreview(val: number) {
   }
   data.tabHtmlPreview = val;
 }
-onMounted(async () => {
+async function iniciar_modals(){
   const $modalElement: any = document.querySelector("#modalNewTemplate");
   const $modalElementEditTemplate: any =
     document.querySelector("#modalEditTemplate");
@@ -498,11 +497,35 @@ onMounted(async () => {
       console.log("modal has been toggled");
     },
   };
+  const $modalDelete: any = document.querySelector("#modalDelete");
+  const modalDeleteOption: ModalOptions = {
+    placement: "center",
+    backdrop: "static",
+    backdropClasses:
+      "bg-gray-900 bg-opacity-50 dark:bg-opacity-80 fixed inset-0 z-40",
+    closable: true,
+    onHide: () => {
+      console.log("modal is hidden");
+    },
+    onShow: () => {
+      console.log("modal is shown");
+    },
+    onToggle: () => {
+      console.log("modal has been toggled");
+    },
+  };
   modal.value = new Modal($modalElement, modalOptions);
   modalEditTemplate.value = new Modal(
     $modalElementEditTemplate,
     modalOptionsEditTemplate
   );
+  modalDelete.value = new Modal($modalDelete, modalDeleteOption);
+}
+function hideModalDelete() {
+  modalDelete.value.hide();
+}
+onMounted(async () => {
+  await iniciar_modals()
   nextTick(async () => {
     await get_templates();
   });

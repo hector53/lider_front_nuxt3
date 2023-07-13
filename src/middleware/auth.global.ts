@@ -33,6 +33,7 @@ export default defineNuxtRouteMiddleware(async (to, from) => {
     
     //ahora verificamos el rol
     if(roleUser=="user"){
+        
       setMenuList(2)
       //@ts-ignore
       if(!rutasUser.includes(to.name)){

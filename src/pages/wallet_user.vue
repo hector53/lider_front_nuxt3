@@ -3,7 +3,7 @@
     <ModalStatic
       :idModal="'modalAddWallet'"
       :title="'Wallet'"
-      :btnSave="'Update Wallet'"
+      :btnSave="data.btnSaveLabel"
       @submit-form="submitForm()"
       @hide-modal="hideModal()"
     >
@@ -300,8 +300,9 @@ import { Modal } from "flowbite";
 import type { ModalOptions } from "flowbite";
 import { required, helpers, email, url } from "@vuelidate/validators";
 import { useVuelidate } from "@vuelidate/core";
-import { useToast, useModal } from "tailvue";
+
 import { Wallet, WalletPagination } from "~/interfaces/wallet";
+import { showToast } from "~/composables/toastLiderPro";
 const { $swal } = useNuxtApp();
 const formHttpError = ref("");
 const editForm = ref(false);
@@ -320,6 +321,7 @@ const data = reactive({
   limit: 10,
   page: 1,
   showBtnNew: false,
+  btnSaveLabel: "Add wallet"
 });
 
 const form = reactive({
@@ -400,8 +402,10 @@ async function get_wallets() {
       data.wallet = response.data.value.getWalletUser;
       data.showTable = true;
       data.showBtnNew = false;
+      data.btnSaveLabel = "Update wallet"
     } else {
       data.showBtnNew = true;
+      data.btnSaveLabel = "Add wallet"
     }
 
     console.log("wallets", data.wallet);
@@ -412,7 +416,7 @@ async function get_wallets() {
 
 async function update_wallet() {
   try {
-    const $toast = useToast();
+
 
     const mutation = gql`
         mutation {
@@ -441,7 +445,7 @@ async function update_wallet() {
       `;
     const response = await useAsyncQuery(mutation);
     console.log("response", response);
-    $toast.success("wallet add successfully");
+    showToast("wallet add successfully", "bottom", 3000)
     await get_wallets();
     modal.value.hide();
     formHttpError.value = "";

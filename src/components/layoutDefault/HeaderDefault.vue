@@ -1,5 +1,6 @@
 <template>
   <div class="home-toolbar">
+    <toast-lider></toast-lider>
     <div
       class="home-toolbar container max-w-8xl mx-auto px-2 py-4 flex justify-between items-center"
     >
